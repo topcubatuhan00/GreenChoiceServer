@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.9" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GreenChoice.Application\GreenChoice.Application.csproj" />
+    <ProjectReference Include="..\GreenChoice.Infrastructure\GreenChoice.Infrastructure.csproj" />
+    <ProjectReference Include="..\GreenChoice.Persistance\GreenChoice.Persistance.csproj" />
+  </ItemGroup>
+
+</Project>
