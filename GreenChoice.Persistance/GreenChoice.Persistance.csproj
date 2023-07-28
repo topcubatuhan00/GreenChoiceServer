@@ -23,9 +23,4 @@
 		<ProjectReference Include="..\GreenChoice.Domain\GreenChoice.Domain.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Repositories\AppRepositories\" />
-	  <Folder Include="UnitOfWorks\" />
-	</ItemGroup>
-
 </Project>
