@@ -1,4 +1,4 @@
-﻿namespace GreenChoice.Domain.Models.Login;
+﻿namespace GreenChoice.Domain.Models.AuthModels;
 
 public partial record UserLoginModel(
         string Username,

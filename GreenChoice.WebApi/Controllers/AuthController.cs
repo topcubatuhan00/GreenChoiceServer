@@ -1,6 +1,6 @@
 ﻿using GreenChoice.Application.Services;
 using GreenChoice.Application.Services.Utilities;
-using GreenChoice.Domain.Models.Login;
+using GreenChoice.Domain.Models.AuthModels;
 using GreenChoice.WebApi.CustomControllerBase;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,6 +31,8 @@ public class AuthController : CustomBaseController
     #endregion
 
     #region Methods
+
+    #region Login
     [HttpPost("[action]")]
     public async Task<IActionResult> Login([FromBody] UserLoginModel model)
     {
@@ -41,6 +43,42 @@ public class AuthController : CustomBaseController
 
         string token = _jwtService.CreateToken(user);
         return Ok(token);
+    }
+    #endregion
+
+    #region Register
+    [HttpPost("[action]")]
+    public async Task<IActionResult> Register([FromForm] UserRegisterModel userRegisterModel)
+    {
+        string fileName = await UploadImage(userRegisterModel.Image);
+        string passwordHash = BCrypt.Net.BCrypt.HashPassword(userRegisterModel.PasswordHash);
+
+        userRegisterModel.PasswordHash = passwordHash;
+        userRegisterModel.Photo = fileName;
+
+        var user = await _authService.CheckDatabaseForUser(userRegisterModel.UserName);
+        if (!user) throw new Exception("Username already used.");
+
+        await _authService.Register(userRegisterModel);
+        return Ok("Successfully registered.");
+
+    }
+    #endregion
+
+    #endregion
+
+    #region Helpers
+    [NonAction]
+    public async Task<string> UploadImage(IFormFile image)
+    {
+        string fileFormat = image.FileName.Substring(image.FileName.LastIndexOf(".")).ToLower();
+        var fileName = Guid.NewGuid().ToString() + fileFormat;
+        var path = "./Content/Images/" + fileName;
+        using (var stream = System.IO.File.Create(path))
+        {
+            await image.CopyToAsync(stream);
+        }
+        return fileName;
     }
     #endregion
 }

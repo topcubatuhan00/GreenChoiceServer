@@ -366,3 +366,4 @@ FodyWeavers.xsd
 /GreenChoice.Application/obj/
 /.vs/
 obj/
+/GreenChoice.WebApi/Content/Images

@@ -2,7 +2,6 @@
 
 	<PropertyGroup>
 		<TargetFramework>net7.0</TargetFramework>
-		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 
@@ -20,6 +19,10 @@
 		<ProjectReference Include="..\GreenChoice.Application\GreenChoice.Application.csproj" />
 		<ProjectReference Include="..\GreenChoice.Infrastructure\GreenChoice.Infrastructure.csproj" />
 		<ProjectReference Include="..\GreenChoice.Persistance\GreenChoice.Persistance.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Content\Images\" />
 	</ItemGroup>
 
 </Project>

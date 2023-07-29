@@ -13,19 +13,43 @@ public class UserQueryRepository : Repository, IUserQueryRepository
         this._transaction = transaction;
     }
     #endregion
-    public Task<bool> CheckDatabaseForUserName(string userName)
+
+    #region Methods
+    public async Task<bool> CheckDatabaseForUserName(string userName)
     {
-        throw new NotImplementedException();
+        var command = CreateCommand("SELECT COUNT(*) FROM [User] WHERE UserName = @userName");
+
+        command.Parameters.AddWithValue("@userName", userName);
+        var result = await command.ExecuteScalarAsync();
+
+        int count;
+        if (int.TryParse(result?.ToString(), out count))
+        {
+            return count > 0;
+        }
+
+        return false;
     }
 
-    public Task<bool> CheckUserId(int userId)
+    public async Task<bool> CheckUserId(int userId)
     {
-        throw new NotImplementedException();
+        var command = CreateCommand("SELECT COUNT(*) FROM [User] WHERE Id = @id");
+
+        command.Parameters.AddWithValue("@id", userId);
+        var result = await command.ExecuteScalarAsync();
+
+        int count;
+        if (int.TryParse(result?.ToString(), out count))
+        {
+            return count > 0;
+        }
+
+        return false;
     }
 
     public async Task<User> CheckUserNameAndPassword(string userName)
     {
-        var command = CreateCommand("SELECT *  FROM Users WHERE UserName = @UserName");
+        var command = CreateCommand("SELECT *  FROM [User] WHERE UserName = @UserName");
 
         command.Parameters.AddWithValue("@UserName", userName);
 
@@ -45,17 +69,80 @@ public class UserQueryRepository : Repository, IUserQueryRepository
                 return user;
             }
         }
-
         return null;
     }
 
-    public Task<User> GetById(int Id)
+    public async Task<User> GetById(int Id)
     {
-        throw new NotImplementedException();
+        var command = CreateCommand("SELECT * FROM [User] WHERE Id = @id");
+        command.Parameters.AddWithValue("@id", Id);
+
+        using (var reader = command.ExecuteReader())
+        {
+            reader.Read();
+
+            return new User
+            {
+                Id = reader["Id"] != DBNull.Value ? Convert.ToInt32(reader["Id"]) : 0,
+                UserName = reader["UserName"] != DBNull.Value ? reader["UserName"].ToString() : string.Empty,
+                Email = reader["Email"] != DBNull.Value ? reader["Email"].ToString() : string.Empty,
+                PhoneNumber = reader["PhoneNumber"] != DBNull.Value ? reader["PhoneNumber"].ToString() : string.Empty,
+                Name = reader["Name"] != DBNull.Value ? reader["Name"].ToString() : string.Empty,
+                LastName = reader["SurName"] != DBNull.Value ? reader["SurName"].ToString() : string.Empty,
+                Photo = reader["Photo"] != DBNull.Value ? reader["Photo"].ToString() : string.Empty,
+                IsActive = reader["IsActive"] != DBNull.Value ? Convert.ToBoolean(reader["IsActive"]) : false
+            };
+        }
     }
 
-    public Task<User> GetByMail(string email)
+    public async Task<User> GetByMail(string email)
     {
-        throw new NotImplementedException();
+        var command = CreateCommand("SELECT * FROM [User] WHERE Email = @email");
+        command.Parameters.AddWithValue("@email", email);
+
+        using (var reader = command.ExecuteReader())
+        {
+            reader.Read();
+
+            return new User
+            {
+                Id = reader["Id"] != DBNull.Value ? Convert.ToInt32(reader["Id"]) : 0,
+                UserName = reader["UserName"] != DBNull.Value ? reader["UserName"].ToString() : string.Empty,
+                Email = reader["Email"] != DBNull.Value ? reader["Email"].ToString() : string.Empty,
+                PhoneNumber = reader["PhoneNumber"] != DBNull.Value ? reader["PhoneNumber"].ToString() : string.Empty,
+                Name = reader["Name"] != DBNull.Value ? reader["Name"].ToString() : string.Empty,
+                LastName = reader["SurName"] != DBNull.Value ? reader["SurName"].ToString() : string.Empty,
+                Photo = reader["Photo"] != DBNull.Value ? reader["Photo"].ToString() : string.Empty,
+                IsActive = reader["IsActive"] != DBNull.Value ? Convert.ToBoolean(reader["IsActive"]) : false
+            };
+        }
     }
+
+    public async Task<User> GetByUserName(string userName)
+    {
+        var user = new User();
+
+        var command = CreateCommand("SELECT * FROM [User] WHERE UserName = @username");
+        command.Parameters.AddWithValue("@username", userName);
+
+        using (var reader = await command.ExecuteReaderAsync())
+        {
+            if (await reader.ReadAsync())
+            {
+                user.Id = reader["Id"] != DBNull.Value ? Convert.ToInt32(reader["Id"]) : 0;
+                user.UserName = reader["UserName"] != DBNull.Value ? reader["UserName"].ToString() : string.Empty;
+                user.Email = reader["Email"] != DBNull.Value ? reader["Email"].ToString() : string.Empty;
+                user.PhoneNumber = reader["PhoneNumber"] != DBNull.Value ? reader["PhoneNumber"].ToString() : string.Empty;
+                user.Name = reader["Name"] != DBNull.Value ? reader["Name"].ToString() : string.Empty;
+                user.LastName = reader["SurName"] != DBNull.Value ? reader["SurName"].ToString() : string.Empty;
+                user.Photo = reader["Photo"] != DBNull.Value ? reader["Photo"].ToString() : string.Empty;
+                user.IsActive = reader["IsActive"] != DBNull.Value ? Convert.ToBoolean(reader["IsActive"]) : false;
+            }
+            reader.Close();
+        }
+
+        return user;
+    }
+
+    #endregion
 }

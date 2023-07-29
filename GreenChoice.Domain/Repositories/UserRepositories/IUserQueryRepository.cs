@@ -7,6 +7,7 @@ public interface IUserQueryRepository
     //PaginationHelper<UserListModel> GetAll(int pageNumber, int pageSize);
     Task<User> GetById(int Id);
     Task<User> GetByMail(string email);
+    Task<User> GetByUserName(string userName);
     Task<bool> CheckUserId(int userId);
     Task<bool> CheckDatabaseForUserName(string userName);
     Task<User> CheckUserNameAndPassword(string userName);
