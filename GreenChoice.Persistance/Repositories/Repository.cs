@@ -9,6 +9,6 @@ public abstract class Repository
 
     protected SqlCommand CreateCommand(string query)
     {
-        return new SqlCommand(query,_context,_transaction);
+        return new SqlCommand(query, _context, _transaction);
     }
 }

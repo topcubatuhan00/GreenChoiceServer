@@ -1,7 +1,6 @@
 ﻿using GreenChoice.Domain.Entities;
 using GreenChoice.Domain.Repositories.UserRepositories;
 using Microsoft.Data.SqlClient;
-using System.Data;
 
 namespace GreenChoice.Persistance.Repositories.AppRepositories.UserRepositories;
 

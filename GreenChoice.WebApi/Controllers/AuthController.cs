@@ -1,5 +1,4 @@
 ﻿using GreenChoice.Application.Services;
-using GreenChoice.Application.Services.Utilities;
 using GreenChoice.Domain.Models.AuthModels;
 using GreenChoice.WebApi.CustomControllerBase;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +17,7 @@ public class AuthController : CustomBaseController
     #region Ctor
     public AuthController
     (
-        IAuthService authService, 
+        IAuthService authService,
         IConfiguration configuration
     )
     {
@@ -30,7 +29,7 @@ public class AuthController : CustomBaseController
     #region Methods
 
     #region Login
-    
+
     [HttpPost("[action]")]
     public async Task<IActionResult> Login([FromBody] UserLoginModel model)
     {
@@ -41,7 +40,7 @@ public class AuthController : CustomBaseController
     #endregion
 
     #region Register
-    
+
     [HttpPost("[action]")]
     public async Task<IActionResult> Register([FromForm] UserRegisterModel userRegisterModel)
     {

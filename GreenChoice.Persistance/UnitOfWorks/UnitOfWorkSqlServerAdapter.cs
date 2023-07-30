@@ -14,7 +14,7 @@ public class UnitOfWorkSqlServerAdapter : IUnitOfWorkAdapter
     #region Ctor
     public UnitOfWorkSqlServerAdapter(string connectionString)
     {
-        _context  =new SqlConnection(connectionString);
+        _context = new SqlConnection(connectionString);
         _context.Open();
         _transaction = _context.BeginTransaction();
         Repositories = new UnitOfWorkSqlServerRepository(_context, _transaction);
@@ -26,7 +26,7 @@ public class UnitOfWorkSqlServerAdapter : IUnitOfWorkAdapter
     {
         if (_transaction != null)
             _transaction.Dispose();
-        if(_context != null)
+        if (_context != null)
         {
             _context.Close();
             _context.Dispose();

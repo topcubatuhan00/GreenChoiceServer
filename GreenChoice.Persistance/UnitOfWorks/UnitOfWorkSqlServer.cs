@@ -17,12 +17,12 @@ public class UnitOfWorkSqlServer : IUnitOfWork
     #endregion
 
     #region Methods
-    
+
     public string GetConnectionString()
     {
         return _configuration.GetConnectionString("GreenChoiceConnection");
     }
-    
+
     public IUnitOfWorkAdapter Create()
     {
         var connectionString = GetConnectionString();

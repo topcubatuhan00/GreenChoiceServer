@@ -51,7 +51,7 @@ public partial class AuthService : IAuthService
         if (user == null) throw new Exception("User not found");
 
         var passwordVerify = VerifyPassword(userLoginModel.Password, user.Password);
-        if(!passwordVerify) throw new Exception("Worng Password");
+        if (!passwordVerify) throw new Exception("Worng Password");
 
         return _jwtService.CreateToken(user);
     }
@@ -63,7 +63,7 @@ public partial class AuthService : IAuthService
         generateImageName.Photo = await UploadImage(userRegisterModel.Image);
         generateImageName.Password = BCrypt.Net.BCrypt.HashPassword(userRegisterModel.Password);
 
-        if(!await UserIsExist(userRegisterModel.UserName)) throw new Exception("Username already used.");
+        if (!await UserIsExist(userRegisterModel.UserName)) throw new Exception("Username already used.");
 
         using (var context = _unitOfWork.Create())
         {
@@ -90,7 +90,7 @@ public partial class AuthService : IAuthService
 
         return model;
     }
-    
+
     private bool VerifyPassword(string Password, string PasswordHash)
     {
         if (!BCrypt.Net.BCrypt.Verify(Password, PasswordHash)) return false;
