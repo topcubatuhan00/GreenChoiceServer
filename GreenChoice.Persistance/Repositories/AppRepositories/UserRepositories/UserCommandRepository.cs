@@ -13,32 +13,30 @@ public class UserCommandRepository : Repository, IUserCommandRepository
         this._transaction = transaction;
     }
     #endregion
+
+    #region Methods
     public async Task AddAsync(User model)
     {
         var query = "INSERT INTO [User]" +
-            "(Username, Email, PhoneNumber, Name, SurName, Photo," +
-            "CreatedDate,CreatorName,DeletedDate,DeleterName,UpdateDate," +
-            "UpdaterName,IsActive,PasswordHash,RoleName) VALUES" +
-            "(@username,@email,@phonenumber,@name,@surname," +
-            "@photo,@createddate,@creatorname,@DeletedDate,@deletername," +
-            "@updatedate,@updatername,@isactive,@passwordHash,@roleName);" +
+            "(Username, Password, Email, Photo, Role," +
+            "CreatedDate,CreatorName,DeletedDate,DeleterName,UpdatedDate," +
+            "UpdaterName) VALUES" +
+            "(@username,@password,@email,@photo,@role," +
+            "@createddate,@creatorname,@deletedDate,@deletername," +
+            "@updatedate,@updatername);" +
             "SELECT SCOPE_IDENTITY();";
         var command = CreateCommand(query);
         command.Parameters.AddWithValue("@username", model.UserName);
+        command.Parameters.AddWithValue("@password", model.Password);
         command.Parameters.AddWithValue("@email", model.Email);
-        command.Parameters.AddWithValue("@phonenumber", model.PhoneNumber);
-        command.Parameters.AddWithValue("@name", model.Name);
-        command.Parameters.AddWithValue("@surname", model.LastName);
         command.Parameters.AddWithValue("@photo", model.Photo);
+        command.Parameters.AddWithValue("@role", model.Role);
         command.Parameters.AddWithValue("@createddate", model.CreatedDate);
         command.Parameters.AddWithValue("@creatorname", model.CreatorName);
-        command.Parameters.AddWithValue("@DeletedDate", model.DeletedTime == null ? DBNull.Value : model.DeletedTime);
-        command.Parameters.AddWithValue("@deletername", model.DeleterName == null ? DBNull.Value : model.DeleterName);
-        command.Parameters.AddWithValue("@updatedate", model.UpdateDate == null ? DBNull.Value : model.UpdateDate);
-        command.Parameters.AddWithValue("@updatername", model.UpdaterName == null ? DBNull.Value : model.UpdaterName);
-        command.Parameters.AddWithValue("@isactive", model.IsActive);
-        command.Parameters.AddWithValue("@passwordHash", model.PasswordHash);
-        command.Parameters.AddWithValue("@roleName", model.RoleName);
+        command.Parameters.AddWithValue("@deletedDate", DBNull.Value);
+        command.Parameters.AddWithValue("@deletername", DBNull.Value);
+        command.Parameters.AddWithValue("@updatedate", DBNull.Value);
+        command.Parameters.AddWithValue("@updatername", DBNull.Value);
         await command.ExecuteNonQueryAsync();
     }
 
@@ -71,9 +69,9 @@ public class UserCommandRepository : Repository, IUserCommandRepository
 
     public void UpdatePassword(User entity)
     {
-        var query = "update [User] set PasswordHash=@pass where Email=@email";
+        var query = "update [User] set Password=@pass where Email=@email";
         var command = CreateCommand(query);
-        command.Parameters.AddWithValue("@pass", entity.PasswordHash);
+        command.Parameters.AddWithValue("@pass", entity.Password);
         command.Parameters.AddWithValue("@email", entity.Email);
 
         command.ExecuteNonQuery();
@@ -83,4 +81,5 @@ public class UserCommandRepository : Repository, IUserCommandRepository
     {
         throw new NotImplementedException();
     }
+    #endregion
 }

@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
-using BCrypt.Net;
 using GreenChoice.Application.Services;
 using GreenChoice.Application.Services.Utilities;
 using GreenChoice.Domain.Entities;
 using GreenChoice.Domain.Models.AuthModels;
 using GreenChoice.Domain.UnitOfWork;
 using Microsoft.AspNetCore.Http;
-using System.Linq;
 
 namespace GreenChoice.Persistance.Services;
 
@@ -52,7 +50,7 @@ public partial class AuthService : IAuthService
         var user = await CheckByUser(userLoginModel.Username);
         if (user == null) throw new Exception("User not found");
 
-        var passwordVerify = VerifyPassword(userLoginModel.Password, user.PasswordHash);
+        var passwordVerify = VerifyPassword(userLoginModel.Password, user.Password);
         if(!passwordVerify) throw new Exception("Worng Password");
 
         return _jwtService.CreateToken(user);
@@ -63,7 +61,7 @@ public partial class AuthService : IAuthService
         var generateImageName = GenerateImageName(userRegisterModel);
 
         generateImageName.Photo = await UploadImage(userRegisterModel.Image);
-        generateImageName.PasswordHash = BCrypt.Net.BCrypt.HashPassword(userRegisterModel.PasswordHash);
+        generateImageName.Password = BCrypt.Net.BCrypt.HashPassword(userRegisterModel.Password);
 
         if(!await UserIsExist(userRegisterModel.UserName)) throw new Exception("Username already used.");
 

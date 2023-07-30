@@ -1,6 +1,7 @@
 ﻿using GreenChoice.Domain.Entities;
 using GreenChoice.Domain.Repositories.UserRepositories;
 using Microsoft.Data.SqlClient;
+using System.Data;
 
 namespace GreenChoice.Persistance.Repositories.AppRepositories.UserRepositories;
 
@@ -49,7 +50,7 @@ public class UserQueryRepository : Repository, IUserQueryRepository
 
     public async Task<User> CheckUserNameAndPassword(string userName)
     {
-        var command = CreateCommand("SELECT *  FROM [User] WHERE UserName = @UserName");
+        var command = CreateCommand("SELECT * FROM [User] WHERE UserName = @UserName");
 
         command.Parameters.AddWithValue("@UserName", userName);
 
@@ -61,9 +62,10 @@ public class UserQueryRepository : Repository, IUserQueryRepository
                 {
                     Id = Convert.ToInt32(reader["Id"]),
                     UserName = reader["UserName"] != DBNull.Value ? reader["UserName"].ToString() : string.Empty,
-                    PasswordHash = reader["PasswordHash"] != DBNull.Value ? reader["PasswordHash"].ToString() : string.Empty,
+                    Password = reader["Password"] != DBNull.Value ? reader["Password"].ToString() : string.Empty,
+                    Email = reader["Email"] != DBNull.Value ? reader["Email"].ToString() : string.Empty,
                     Photo = reader["Photo"] != DBNull.Value ? reader["Photo"].ToString() : string.Empty,
-                    RoleName = reader["RoleName"] != DBNull.Value ? reader["RoleName"].ToString() : string.Empty
+                    Role = reader["Role"] != DBNull.Value ? reader["Role"].ToString() : string.Empty
                 };
 
                 return user;
@@ -83,14 +85,12 @@ public class UserQueryRepository : Repository, IUserQueryRepository
 
             return new User
             {
-                Id = reader["Id"] != DBNull.Value ? Convert.ToInt32(reader["Id"]) : 0,
+                Id = Convert.ToInt32(reader["Id"]),
                 UserName = reader["UserName"] != DBNull.Value ? reader["UserName"].ToString() : string.Empty,
+                Password = reader["Password"] != DBNull.Value ? reader["Password"].ToString() : string.Empty,
                 Email = reader["Email"] != DBNull.Value ? reader["Email"].ToString() : string.Empty,
-                PhoneNumber = reader["PhoneNumber"] != DBNull.Value ? reader["PhoneNumber"].ToString() : string.Empty,
-                Name = reader["Name"] != DBNull.Value ? reader["Name"].ToString() : string.Empty,
-                LastName = reader["SurName"] != DBNull.Value ? reader["SurName"].ToString() : string.Empty,
                 Photo = reader["Photo"] != DBNull.Value ? reader["Photo"].ToString() : string.Empty,
-                IsActive = reader["IsActive"] != DBNull.Value ? Convert.ToBoolean(reader["IsActive"]) : false
+                Role = reader["Role"] != DBNull.Value ? reader["Role"].ToString() : string.Empty
             };
         }
     }
@@ -106,14 +106,12 @@ public class UserQueryRepository : Repository, IUserQueryRepository
 
             return new User
             {
-                Id = reader["Id"] != DBNull.Value ? Convert.ToInt32(reader["Id"]) : 0,
+                Id = Convert.ToInt32(reader["Id"]),
                 UserName = reader["UserName"] != DBNull.Value ? reader["UserName"].ToString() : string.Empty,
+                Password = reader["Password"] != DBNull.Value ? reader["Password"].ToString() : string.Empty,
                 Email = reader["Email"] != DBNull.Value ? reader["Email"].ToString() : string.Empty,
-                PhoneNumber = reader["PhoneNumber"] != DBNull.Value ? reader["PhoneNumber"].ToString() : string.Empty,
-                Name = reader["Name"] != DBNull.Value ? reader["Name"].ToString() : string.Empty,
-                LastName = reader["SurName"] != DBNull.Value ? reader["SurName"].ToString() : string.Empty,
                 Photo = reader["Photo"] != DBNull.Value ? reader["Photo"].ToString() : string.Empty,
-                IsActive = reader["IsActive"] != DBNull.Value ? Convert.ToBoolean(reader["IsActive"]) : false
+                Role = reader["Role"] != DBNull.Value ? reader["Role"].ToString() : string.Empty
             };
         }
     }
@@ -129,14 +127,12 @@ public class UserQueryRepository : Repository, IUserQueryRepository
         {
             if (await reader.ReadAsync())
             {
-                user.Id = reader["Id"] != DBNull.Value ? Convert.ToInt32(reader["Id"]) : 0;
+                user.Id = Convert.ToInt32(reader["Id"]);
                 user.UserName = reader["UserName"] != DBNull.Value ? reader["UserName"].ToString() : string.Empty;
+                user.Password = reader["Password"] != DBNull.Value ? reader["Password"].ToString() : string.Empty;
                 user.Email = reader["Email"] != DBNull.Value ? reader["Email"].ToString() : string.Empty;
-                user.PhoneNumber = reader["PhoneNumber"] != DBNull.Value ? reader["PhoneNumber"].ToString() : string.Empty;
-                user.Name = reader["Name"] != DBNull.Value ? reader["Name"].ToString() : string.Empty;
-                user.LastName = reader["SurName"] != DBNull.Value ? reader["SurName"].ToString() : string.Empty;
                 user.Photo = reader["Photo"] != DBNull.Value ? reader["Photo"].ToString() : string.Empty;
-                user.IsActive = reader["IsActive"] != DBNull.Value ? Convert.ToBoolean(reader["IsActive"]) : false;
+                user.Role = reader["Role"] != DBNull.Value ? reader["Role"].ToString() : string.Empty;
             }
             reader.Close();
         }
