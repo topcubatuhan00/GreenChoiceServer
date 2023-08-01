@@ -24,15 +24,4 @@
 		<ProjectReference Include="..\GreenChoice.Domain\GreenChoice.Domain.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Repositories\AppRepositories\CampaignRepositories\" />
-	  <Folder Include="Repositories\AppRepositories\CategoryRepositories\" />
-	  <Folder Include="Repositories\AppRepositories\CommentRepositories\" />
-	  <Folder Include="Repositories\AppRepositories\ProductCriteriaRSRepositories\" />
-	  <Folder Include="Repositories\AppRepositories\ProductRepositories\" />
-	  <Folder Include="Repositories\AppRepositories\StoreRepositories\" />
-	  <Folder Include="Repositories\AppRepositories\SustainabilityCriteriaRepositories\" />
-	  <Folder Include="Repositories\AppRepositories\UserCampaignRSRepositories\" />
-	</ItemGroup>
-
 </Project>
