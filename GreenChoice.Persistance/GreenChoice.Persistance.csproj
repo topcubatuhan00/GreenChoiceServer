@@ -3,11 +3,12 @@
 	<PropertyGroup>
 		<TargetFramework>net7.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
+		<Nullable>disable</Nullable>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="AutoMapper" Version="12.0.1" />
+		<PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.5" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.5">
 			<PrivateAssets>all</PrivateAssets>
@@ -21,11 +22,6 @@
 	<ItemGroup>
 		<ProjectReference Include="..\GreenChoice.Application\GreenChoice.Application.csproj" />
 		<ProjectReference Include="..\GreenChoice.Domain\GreenChoice.Domain.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Repositories\AppRepositories\" />
-	  <Folder Include="UnitOfWorks\" />
 	</ItemGroup>
 
 </Project>
