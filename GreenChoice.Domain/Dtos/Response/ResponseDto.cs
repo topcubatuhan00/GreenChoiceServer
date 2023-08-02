@@ -11,6 +11,10 @@ public class ResponseDto<T>
     [JsonIgnore]
     public bool IsSuccess { get; private set; }
 
+    public static ResponseDto<T> Success(T data, int statusCode)
+    {
+        return new ResponseDto<T> { Data = data, StatusCode = statusCode, IsSuccess = true };
+    }
     public static ResponseDto<T> Success(int statusCode)
     {
         return new ResponseDto<T> { Data = default(T), StatusCode = statusCode, IsSuccess = true };

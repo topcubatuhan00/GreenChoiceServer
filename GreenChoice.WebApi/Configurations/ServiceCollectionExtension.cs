@@ -15,6 +15,7 @@ public static class ServiceCollectionExtension
         #region App Scopes
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IFileService, FileService>();
+        services.AddScoped<ICampaignService, CampaignService>();
         #endregion
 
         #region Utilities
