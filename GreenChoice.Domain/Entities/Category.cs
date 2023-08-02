@@ -1,6 +1,9 @@
-﻿namespace GreenChoice.Domain.Entities
+﻿using GreenChoice.Domain.Core;
+
+namespace GreenChoice.Domain.Entities;
+
+public class Category : EntityBase
 {
-    internal class Category
-    {
-    }
+    public string Name { get; set; }
+    public string Description { get; set; }
 }

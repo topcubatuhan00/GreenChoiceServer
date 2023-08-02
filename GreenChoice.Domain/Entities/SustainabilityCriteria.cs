@@ -1,6 +1,9 @@
-﻿namespace GreenChoice.Domain.Entities
+﻿using GreenChoice.Domain.Core;
+
+namespace GreenChoice.Domain.Entities;
+
+public class SustainabilityCriteria : EntityBase
 {
-    internal class SustainabilityCriteria
-    {
-    }
+    public string Name { get; set; }
+    public string Description { get; set; }
 }
