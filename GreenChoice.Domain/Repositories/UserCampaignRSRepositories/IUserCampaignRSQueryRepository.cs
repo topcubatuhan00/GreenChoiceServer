@@ -1,6 +1,11 @@
-﻿namespace GreenChoice.Domain.Repositories.UserCampaignRSRepositories
+﻿using GreenChoice.Domain.Entities;
+using GreenChoice.Domain.Helpers;
+using GreenChoice.Domain.Models.HelperModels;
+
+namespace GreenChoice.Domain.Repositories.UserCampaignRSRepositories;
+
+public interface IUserCampaignRSQueryRepository
 {
-    internal interface IUserCampaignRSQueryRepository
-    {
-    }
+    PaginationHelper<UserCampaignRS> GetAll(PaginationRequest request);
+    Task<UserCampaignRS> GetById(int Id);
 }

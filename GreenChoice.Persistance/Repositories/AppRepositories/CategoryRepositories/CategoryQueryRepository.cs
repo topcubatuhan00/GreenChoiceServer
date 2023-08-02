@@ -1,6 +1,19 @@
-﻿namespace GreenChoice.Persistance.Repositories.AppRepositories.CategoryRepositories
+﻿using GreenChoice.Domain.Entities;
+using GreenChoice.Domain.Helpers;
+using GreenChoice.Domain.Models.HelperModels;
+using GreenChoice.Domain.Repositories.CategoryRepositories;
+
+namespace GreenChoice.Persistance.Repositories.AppRepositories.CategoryRepositories;
+
+public class CategoryQueryRepository : ICategoryQueryRepository
 {
-    internal class CategoryQueryRepository
+    public PaginationHelper<Category> GetAll(PaginationRequest request)
     {
+        throw new NotImplementedException();
+    }
+
+    public Task<Category> GetById(int Id)
+    {
+        throw new NotImplementedException();
     }
 }

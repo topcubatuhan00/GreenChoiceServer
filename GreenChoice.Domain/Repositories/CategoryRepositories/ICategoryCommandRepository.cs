@@ -1,6 +1,10 @@
-﻿namespace GreenChoice.Domain.Repositories.CategoryRepositories
+﻿using GreenChoice.Domain.Models.CategoryModels;
+
+namespace GreenChoice.Domain.Repositories.CategoryRepositories;
+
+public interface ICategoryCommandRepository
 {
-    internal interface ICategoryCommandRepository
-    {
-    }
+    Task AddAsync(CreateCategoryModel model);
+    Task UpdateAsync(UpdateCategoryModel model);
+    Task RemoveByIdAsync(int id);
 }

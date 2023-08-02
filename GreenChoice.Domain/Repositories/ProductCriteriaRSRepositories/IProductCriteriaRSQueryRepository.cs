@@ -1,6 +1,11 @@
-﻿namespace GreenChoice.Domain.Repositories.ProductCriteriaRSRepositories
+﻿using GreenChoice.Domain.Entities;
+using GreenChoice.Domain.Helpers;
+using GreenChoice.Domain.Models.HelperModels;
+
+namespace GreenChoice.Domain.Repositories.ProductCriteriaRSRepositories;
+
+public interface IProductCriteriaRSQueryRepository
 {
-    internal interface IProductCriteriaRSQueryRepository
-    {
-    }
+    PaginationHelper<ProductCriteriaRS> GetAll(PaginationRequest request);
+    Task<ProductCriteriaRS> GetById(int Id);
 }

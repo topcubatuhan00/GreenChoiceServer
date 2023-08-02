@@ -1,4 +1,6 @@
 ﻿using GreenChoice.Domain.Entities;
+using GreenChoice.Domain.Helpers;
+using GreenChoice.Domain.Models.HelperModels;
 using GreenChoice.Domain.Repositories.UserRepositories;
 using Microsoft.Data.SqlClient;
 
@@ -71,6 +73,11 @@ public class UserQueryRepository : Repository, IUserQueryRepository
             }
         }
         return null;
+    }
+
+    public PaginationHelper<User> GetAll(PaginationRequest request)
+    {
+        throw new NotImplementedException();
     }
 
     public async Task<User> GetById(int Id)
