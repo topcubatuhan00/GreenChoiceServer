@@ -71,4 +71,32 @@ public class ProductQueryRepository : Repository, IProductQueryRepository
                 return null;
         }
     }
+
+    public async Task<Product> GetByName(string Name)
+    {
+        var command = CreateCommand("SELECT * FROM [Product] WHERE Name=@name");
+        command.Parameters.AddWithValue("@name", Name);
+
+        using (var reader = command.ExecuteReader())
+        {
+            if (reader.HasRows && reader.Read())
+            {
+                return new Product
+                {
+                    Id = Convert.ToInt32(reader["Id"]),
+                    Name = reader["Name"] != null ? reader["Name"].ToString() : "",
+                    Description = reader["Description"] != null ? reader["Description"].ToString() : "",
+                    CategoryId = Convert.ToInt32(reader["CategoryId"]),
+                    BrandName = reader["Description"] != null ? reader["Description"].ToString() : "",
+                    Barcode = reader["Description"] != null ? reader["Description"].ToString() : "",
+                    PackageInformation = reader["Description"] != null ? reader["Description"].ToString() : "",
+                    ProductionProcessInformation = reader["Description"] != null ? reader["Description"].ToString() : "",
+                    SustainabilityScore = Convert.ToSingle(reader["SustainabilityScore"]),
+                    AverageScore = Convert.ToSingle(reader["AverageScore"]),
+                };
+            }
+            else
+                return null;
+        }
+    }
 }

@@ -1,4 +1,5 @@
-﻿using GreenChoice.Domain.Models.CommentModels;
+﻿using GreenChoice.Domain.Entities;
+using GreenChoice.Domain.Models.CommentModels;
 using GreenChoice.Domain.Repositories.CommentRepositories;
 using Microsoft.Data.SqlClient;
 
@@ -13,7 +14,7 @@ public class CommentCommandRepository : Repository, ICommentCommandRepository
         this._transaction = transaction;
     }
     #endregion
-    public async Task AddAsync(CreateCommentModel model)
+    public async Task AddAsync(Comment model)
     {
         var query = "INSERT INTO [Comment]" +
             "(ProductId, UserId, Text, CommentScore ,CreatedDate,CreatorName,DeletedDate,DeleterName,UpdatedDate,UpdaterName) VALUES" +
@@ -40,7 +41,7 @@ public class CommentCommandRepository : Repository, ICommentCommandRepository
         await command.ExecuteNonQueryAsync();
     }
 
-    public async Task UpdateAsync(UpdateCommentModel model)
+    public async Task UpdateAsync(Comment model)
     {
         var query = "update [Comment] set ProductId=@productId, UserId=@userId, Text=@text, CommentScore=@score where Id=@id";
         var command = CreateCommand(query);

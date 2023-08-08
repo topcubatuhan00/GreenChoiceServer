@@ -8,4 +8,5 @@ public interface IProductQueryRepository
 {
     PaginationHelper<Product> GetAll(PaginationRequest request);
     Task<Product> GetById(int Id);
+    Task<Product> GetByName(string Name);
 }

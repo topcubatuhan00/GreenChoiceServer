@@ -1,35 +1,88 @@
-﻿using GreenChoice.Domain.Dtos.Response;
+﻿using AutoMapper;
+using GreenChoice.Domain.Dtos.Response;
 using GreenChoice.Domain.Entities;
 using GreenChoice.Domain.Helpers;
 using GreenChoice.Domain.Models.HelperModels;
 using GreenChoice.Domain.Models.UserCampaignRSModels;
+using GreenChoice.Domain.UnitOfWork;
 
 namespace GreenChoice.Application.Services;
 
 public class UserCampaignRSService : IUserCampaignRSService
 {
-    public Task Create(CreateUserCampaignRSModel model)
+    #region Fields
+    private readonly IMapper _mapper;
+    private readonly IUnitOfWork _unitOfWork;
+    #endregion
+
+    #region Ctor
+    public UserCampaignRSService(IUnitOfWork unitOfWork, IMapper mapper)
     {
-        throw new NotImplementedException();
+        _unitOfWork = unitOfWork;
+        _mapper = mapper;
+    }
+    #endregion
+
+    public async Task Create(CreateUserCampaignRSModel model)
+    {
+        using (var context = _unitOfWork.Create())
+        {
+            var entity = _mapper.Map<UserCampaignRS>(model);
+            await context.Repositories.userCampaignRSCommandRepository.AddAsync(entity);
+
+            context.SaveChanges();
+        }
     }
 
-    public Task<ResponseDto<PaginationHelper<UserCampaignRS>>> GetAll(PaginationRequest request)
+    public async Task<ResponseDto<PaginationHelper<UserCampaignRS>>> GetAll(PaginationRequest request)
     {
-        throw new NotImplementedException();
+        using (var context = _unitOfWork.Create())
+        {
+            var result = context.Repositories.userCampaignRSQueryRepository.GetAll(request);
+
+            var paginationHelper = new PaginationHelper<UserCampaignRS>(result.TotalCount, request.PageSize, request.PageNumber, null);
+
+            var UserCampaignRSs = result.Items.Select(item => _mapper.Map<UserCampaignRS>(item)).ToList();
+
+            paginationHelper.Items = UserCampaignRSs;
+
+            return ResponseDto<PaginationHelper<UserCampaignRS>>.Success(paginationHelper, 200);
+        }
     }
 
-    public Task<ResponseDto<UserCampaignRS>> GetById(int id)
+    public async Task<ResponseDto<UserCampaignRS>> GetById(int id)
     {
-        throw new NotImplementedException();
+        using (var context = _unitOfWork.Create())
+        {
+            var result = await context.Repositories.userCampaignRSQueryRepository.GetById(id);
+            return ResponseDto<UserCampaignRS>.Success(result, 200);
+        }
     }
 
-    public Task Remove(int id)
+    public async Task Remove(int id)
     {
-        throw new NotImplementedException();
+        using (var context = _unitOfWork.Create())
+        {
+            var check = await context.Repositories.userCampaignRSQueryRepository.GetById(id);
+            if (check == null) throw new Exception("Not Found");
+
+            await context.Repositories.userCampaignRSCommandRepository.RemoveByIdAsync(id);
+            context.SaveChanges();
+        }
     }
 
-    public Task Update(UpdateUserCampaignRSModel model)
+    public async Task Update(UpdateUserCampaignRSModel model)
     {
-        throw new NotImplementedException();
+        using (var context = _unitOfWork.Create())
+        {
+            var check = await context.Repositories.userCampaignRSQueryRepository.GetById(model.Id);
+            if (check == null) throw new Exception("Not Found");
+
+            var entity = _mapper.Map<UserCampaignRS>(model);
+            entity.UpdatedDate = DateTime.Now;
+            entity.UpdaterName = "Admin";
+            await context.Repositories.userCampaignRSCommandRepository.UpdateAsync(entity);
+            context.SaveChanges();
+        }
     }
 }
