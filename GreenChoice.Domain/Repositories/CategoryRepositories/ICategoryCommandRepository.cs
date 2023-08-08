@@ -1,10 +1,11 @@
-﻿using GreenChoice.Domain.Models.CategoryModels;
+﻿using GreenChoice.Domain.Entities;
+using GreenChoice.Domain.Models.CategoryModels;
 
 namespace GreenChoice.Domain.Repositories.CategoryRepositories;
 
 public interface ICategoryCommandRepository
 {
-    Task AddAsync(CreateCategoryModel model);
-    Task UpdateAsync(UpdateCategoryModel model);
+    Task AddAsync(Category model);
+    Task UpdateAsync(Category model);
     Task RemoveByIdAsync(int id);
 }

@@ -8,4 +8,5 @@ public interface ICategoryQueryRepository
 {
     PaginationHelper<Category> GetAll(PaginationRequest request);
     Task<Category> GetById(int Id);
+    Task<Category> GetByName(string Name);
 }

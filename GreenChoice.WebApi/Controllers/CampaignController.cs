@@ -1,4 +1,5 @@
 ﻿using GreenChoice.Application.Services;
+using GreenChoice.Domain.Entities;
 using GreenChoice.Domain.Models.CampaignModels;
 using GreenChoice.Domain.Models.HelperModels;
 using GreenChoice.WebApi.CustomControllerBase;
@@ -25,17 +26,17 @@ public class CampaignController : CustomBaseController
     [HttpGet("[action]")]
     public async Task<IActionResult> GetAll([FromQuery] PaginationRequest request)
     {
-        var users = await _campaignService.GetAll(request);
+        var campaigns = await _campaignService.GetAll(request);
 
-        return CreateActionResultInstance(users);
+        return CreateActionResultInstance(campaigns);
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(int id)
     {
-        var user = await _campaignService.GetById(id);
+        var campaign = await _campaignService.GetById(id);
 
-        return CreateActionResultInstance(user);
+        return CreateActionResultInstance(campaign);
     }
 
     [HttpPost("[action]")]
