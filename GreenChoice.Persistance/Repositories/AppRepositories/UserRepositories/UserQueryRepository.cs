@@ -77,7 +77,27 @@ public class UserQueryRepository : Repository, IUserQueryRepository
 
     public PaginationHelper<User> GetAll(PaginationRequest request)
     {
-        throw new NotImplementedException();
+        var command = CreateCommand("SELECT COUNT(*) FROM [User]");
+        int totalCount = (int)command.ExecuteScalar();
+
+        command.CommandText = $"SELECT * FROM [User] ORDER BY Id OFFSET {((request.PageNumber - 1) * request.PageSize)} ROWS FETCH NEXT {request.PageSize} ROWS ONLY";
+        using (var reader = command.ExecuteReader())
+        {
+            List<User> suss = new List<User>();
+            while (reader.Read())
+            {
+                suss.Add(new User
+                {
+                    Id = Convert.ToInt32(reader["Id"]),
+                    UserName = reader["UserName"] != DBNull.Value ? reader["UserName"].ToString() : string.Empty,
+                    Password = reader["Password"] != DBNull.Value ? reader["Password"].ToString() : string.Empty,
+                    Email = reader["Email"] != DBNull.Value ? reader["Email"].ToString() : string.Empty,
+                    Photo = reader["Photo"] != DBNull.Value ? reader["Photo"].ToString() : string.Empty,
+                    Role = reader["Role"] != DBNull.Value ? reader["Role"].ToString() : string.Empty
+                });
+            }
+            return new PaginationHelper<User>(totalCount, request.PageSize, request.PageNumber, suss);
+        }
     }
 
     public async Task<User> GetById(int Id)

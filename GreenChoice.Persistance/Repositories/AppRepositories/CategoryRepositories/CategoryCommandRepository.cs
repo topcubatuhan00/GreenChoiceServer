@@ -15,7 +15,7 @@ public class CategoryCommandRepository : Repository, ICategoryCommandRepository
     {
         var query = "INSERT INTO [Category]" +
             "(Name, Description, CreatedDate,CreatorName,DeletedDate,DeleterName,UpdatedDate,UpdaterName) VALUES" +
-            "@name, @description ,@createddate,@creatorname,@deletedDate,@deletername,@updatedate,@updatername);" +
+            "(@name, @description ,@createddate,@creatorname,@deletedDate,@deletername,@updatedate,@updatername);" +
             "SELECT SCOPE_IDENTITY();";
         var command = CreateCommand(query);
         command.Parameters.AddWithValue("@name", model.Name);

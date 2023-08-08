@@ -56,7 +56,7 @@ public partial class MappingProfile : Profile
         #endregion
 
         #region UserCampaignRS
-        CreateMap<UserCampaignRS, CreateSustainabilityCriteriaModel>().ReverseMap();
+        CreateMap<UserCampaignRS, CreateUserCampaignRSModel>().ReverseMap();
         CreateMap<UserCampaignRS, UpdateUserCampaignRSModel>().ReverseMap();
         #endregion
     }

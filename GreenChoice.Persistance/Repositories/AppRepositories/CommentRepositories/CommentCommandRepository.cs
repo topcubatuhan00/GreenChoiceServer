@@ -18,7 +18,7 @@ public class CommentCommandRepository : Repository, ICommentCommandRepository
     {
         var query = "INSERT INTO [Comment]" +
             "(ProductId, UserId, Text, CommentScore ,CreatedDate,CreatorName,DeletedDate,DeleterName,UpdatedDate,UpdaterName) VALUES" +
-            "@productId, @userId, @text, @commentScore ,@createddate,@creatorname,@deletedDate,@deletername,@updatedate,@updatername);" +
+            "(@productId, @userId, @text, @commentScore ,@createddate,@creatorname,@deletedDate,@deletername,@updatedate,@updatername);" +
             "SELECT SCOPE_IDENTITY();";
         var command = CreateCommand(query);
         command.Parameters.AddWithValue("@productId", model.ProductId);

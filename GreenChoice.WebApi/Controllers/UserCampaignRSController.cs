@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GreenChoice.WebApi.Controllers;
 
+[ApiController]
+[Route("[controller]")]
 public class UserCampaignRSController : CustomBaseController
 {
     #region Fields

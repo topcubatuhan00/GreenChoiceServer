@@ -27,8 +27,8 @@ public class SustainabilityCriteriaService : ISustainabilityCriteriaService
     {
         using (var context = _unitOfWork.Create())
         {
-            var entity = _mapper.Map<Product>(model);
-            await context.Repositories.productCommandRepository.AddAsync(entity);
+            var entity = _mapper.Map<SustainabilityCriteria>(model);
+            await context.Repositories.sustainabilityCriteriaCommandRepository.AddAsync(entity);
 
             context.SaveChanges();
         }
@@ -66,7 +66,7 @@ public class SustainabilityCriteriaService : ISustainabilityCriteriaService
             var checkProduct = await context.Repositories.sustainabilityCriteriaQueryRepository.GetById(id);
             if (checkProduct == null) throw new Exception("Not Found");
 
-            await context.Repositories.productCommandRepository.RemoveByIdAsync(id);
+            await context.Repositories.sustainabilityCriteriaCommandRepository.RemoveByIdAsync(id);
             context.SaveChanges();
         }
     }
@@ -78,10 +78,10 @@ public class SustainabilityCriteriaService : ISustainabilityCriteriaService
             var checkProduct = await context.Repositories.sustainabilityCriteriaQueryRepository.GetById(model.Id);
             if (checkProduct == null) throw new Exception("Not Found");
 
-            var entity = _mapper.Map<Product>(model);
+            var entity = _mapper.Map<SustainabilityCriteria>(model);
             entity.UpdatedDate = DateTime.Now;
             entity.UpdaterName = "Admin";
-            await context.Repositories.productCommandRepository.UpdateAsync(entity);
+            await context.Repositories.sustainabilityCriteriaCommandRepository.UpdateAsync(entity);
             context.SaveChanges();
         }
     }
