@@ -1,5 +1,4 @@
 ﻿using GreenChoice.Domain.Entities;
-using GreenChoice.Domain.Models.SustainabilityCriteriaModels;
 
 namespace GreenChoice.Domain.Repositories.SustainabilityCriteriaRepositories;
 

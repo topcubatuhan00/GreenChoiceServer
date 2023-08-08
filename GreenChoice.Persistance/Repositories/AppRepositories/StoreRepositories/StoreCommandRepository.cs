@@ -1,5 +1,4 @@
 ﻿using GreenChoice.Domain.Entities;
-using GreenChoice.Domain.Models.StoreModels;
 using GreenChoice.Domain.Repositories.StoreRepositories;
 using Microsoft.Data.SqlClient;
 

@@ -1,5 +1,4 @@
 ﻿using GreenChoice.Domain.Entities;
-using GreenChoice.Domain.Models.CommentModels;
 
 namespace GreenChoice.Domain.Repositories.CommentRepositories;
 

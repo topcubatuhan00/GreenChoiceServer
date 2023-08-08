@@ -1,5 +1,4 @@
 ﻿using GreenChoice.Domain.Entities;
-using GreenChoice.Domain.Models.ProductCriteriaRSModels;
 
 namespace GreenChoice.Domain.Repositories.ProductCriteriaRSRepositories;
 

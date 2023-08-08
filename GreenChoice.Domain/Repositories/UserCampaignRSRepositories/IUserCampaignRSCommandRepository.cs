@@ -1,5 +1,4 @@
 ﻿using GreenChoice.Domain.Entities;
-using GreenChoice.Domain.Models.UserCampaignRSModels;
 
 namespace GreenChoice.Domain.Repositories.UserCampaignRSRepositories;
 

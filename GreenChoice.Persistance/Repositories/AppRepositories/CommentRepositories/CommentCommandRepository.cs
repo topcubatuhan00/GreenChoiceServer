@@ -1,5 +1,4 @@
 ﻿using GreenChoice.Domain.Entities;
-using GreenChoice.Domain.Models.CommentModels;
 using GreenChoice.Domain.Repositories.CommentRepositories;
 using Microsoft.Data.SqlClient;
 
