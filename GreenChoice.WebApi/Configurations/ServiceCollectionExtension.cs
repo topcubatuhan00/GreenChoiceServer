@@ -16,10 +16,17 @@ public static class ServiceCollectionExtension
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IFileService, FileService>();
         services.AddScoped<ICampaignService, CampaignService>();
+        services.AddScoped<ICategoryService, CategoryService>();
+        services.AddScoped<ICommentService, CommentService>();
+        services.AddScoped<IProductService, ProductService>();
+        services.AddScoped<IProductCriteriaRSService, ProductCriteriaRSService>();
+        services.AddScoped<IStoreService, StoreService>();
+        services.AddScoped<ISustainabilityCriteriaService, SustainabilityCriteriaService>();
+        services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IUserCampaignRSService, UserCampaignRSService>();
         #endregion
 
         #region Utilities
-
         services.AddTransient<IUnitOfWork, UnitOfWorkSqlServer>();
         services.AddAutoMapper(typeof(MappingProfile));
         services.AddEndpointsApiExplorer();

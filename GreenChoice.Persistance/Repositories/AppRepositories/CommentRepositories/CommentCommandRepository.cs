@@ -1,17 +1,30 @@
-﻿using GreenChoice.Domain.Models.CommentModels;
+﻿using GreenChoice.Domain.Entities;
+using GreenChoice.Domain.Models.CommentModels;
 using GreenChoice.Domain.Repositories.CommentRepositories;
+using Microsoft.Data.SqlClient;
 
 namespace GreenChoice.Persistance.Repositories.AppRepositories.CommentRepositories;
 
 public class CommentCommandRepository : Repository, ICommentCommandRepository
 {
-    public async Task AddAsync(CreateCommentModel model)
+    #region Ctor
+    public CommentCommandRepository(SqlConnection context, SqlTransaction transaction)
     {
-        var query = "INSERT INTO [Campaign]" +
-            "(CreatedDate,CreatorName,DeletedDate,DeleterName,UpdatedDate,UpdaterName) VALUES" +
-            "@createddate,@creatorname,@deletedDate,@deletername,@updatedate,@updatername);" +
+        this._context = context;
+        this._transaction = transaction;
+    }
+    #endregion
+    public async Task AddAsync(Comment model)
+    {
+        var query = "INSERT INTO [Comment]" +
+            "(ProductId, UserId, Text, CommentScore ,CreatedDate,CreatorName,DeletedDate,DeleterName,UpdatedDate,UpdaterName) VALUES" +
+            "(@productId, @userId, @text, @commentScore ,@createddate,@creatorname,@deletedDate,@deletername,@updatedate,@updatername);" +
             "SELECT SCOPE_IDENTITY();";
         var command = CreateCommand(query);
+        command.Parameters.AddWithValue("@productId", model.ProductId);
+        command.Parameters.AddWithValue("@userId", model.UserId);
+        command.Parameters.AddWithValue("@text", model.Text);
+        command.Parameters.AddWithValue("@commentScore", 0);
         command.Parameters.AddWithValue("@createddate", DateTime.Now);
         command.Parameters.AddWithValue("@creatorname", model.CreatorName);
         command.Parameters.AddWithValue("@deletedDate", DBNull.Value);
@@ -21,13 +34,23 @@ public class CommentCommandRepository : Repository, ICommentCommandRepository
         await command.ExecuteNonQueryAsync();
     }
 
-    public Task RemoveByIdAsync(int id)
+    public async Task RemoveByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        var command = CreateCommand("delete from [Comment] where Id=@id");
+        command.Parameters.AddWithValue("@id", id);
+        await command.ExecuteNonQueryAsync();
     }
 
-    public Task UpdateAsync(UpdateCommentModel model)
+    public async Task UpdateAsync(Comment model)
     {
-        throw new NotImplementedException();
+        var query = "update [Comment] set ProductId=@productId, UserId=@userId, Text=@text, CommentScore=@score where Id=@id";
+        var command = CreateCommand(query);
+        command.Parameters.AddWithValue("@id", model.Id);
+        command.Parameters.AddWithValue("@productId", model.ProductId);
+        command.Parameters.AddWithValue("@userId", model.UserId);
+        command.Parameters.AddWithValue("@text", model.Text);
+        command.Parameters.AddWithValue("@score", model.CommentScore);
+
+        await command.ExecuteNonQueryAsync();
     }
 }

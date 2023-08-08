@@ -1,17 +1,25 @@
-﻿using GreenChoice.Domain.Models.CategoryModels;
+﻿using GreenChoice.Domain.Entities;
 using GreenChoice.Domain.Repositories.CategoryRepositories;
+using Microsoft.Data.SqlClient;
 
 namespace GreenChoice.Persistance.Repositories.AppRepositories.CategoryRepositories;
 
 public class CategoryCommandRepository : Repository, ICategoryCommandRepository
 {
-    public async Task AddAsync(CreateCategoryModel model)
+    public CategoryCommandRepository(SqlConnection context, SqlTransaction transaction)
     {
-        var query = "INSERT INTO [Campaign]" +
-            "(CreatedDate,CreatorName,DeletedDate,DeleterName,UpdatedDate,UpdaterName) VALUES" +
-            "@createddate,@creatorname,@deletedDate,@deletername,@updatedate,@updatername);" +
+        this._context = context;
+        this._transaction = transaction;
+    }
+    public async Task AddAsync(Category model)
+    {
+        var query = "INSERT INTO [Category]" +
+            "(Name, Description, CreatedDate,CreatorName,DeletedDate,DeleterName,UpdatedDate,UpdaterName) VALUES" +
+            "(@name, @description ,@createddate,@creatorname,@deletedDate,@deletername,@updatedate,@updatername);" +
             "SELECT SCOPE_IDENTITY();";
         var command = CreateCommand(query);
+        command.Parameters.AddWithValue("@name", model.Name);
+        command.Parameters.AddWithValue("@description", model.Description);
         command.Parameters.AddWithValue("@createddate", DateTime.Now);
         command.Parameters.AddWithValue("@creatorname", model.CreatorName);
         command.Parameters.AddWithValue("@deletedDate", DBNull.Value);
@@ -21,13 +29,21 @@ public class CategoryCommandRepository : Repository, ICategoryCommandRepository
         await command.ExecuteNonQueryAsync();
     }
 
-    public Task RemoveByIdAsync(int id)
+    public async Task RemoveByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        var command = CreateCommand("delete from [Category] where Id=@id");
+        command.Parameters.AddWithValue("@id", id);
+        await command.ExecuteNonQueryAsync();
     }
 
-    public Task UpdateAsync(UpdateCategoryModel model)
+    public async Task UpdateAsync(Category model)
     {
-        throw new NotImplementedException();
+        var query = "update [Category] set Name=@name, Description=@description where Id=@id";
+        var command = CreateCommand(query);
+        command.Parameters.AddWithValue("@name", model.Name);
+        command.Parameters.AddWithValue("@description", model.Description);
+        command.Parameters.AddWithValue("@id", model.Id);
+
+        await command.ExecuteNonQueryAsync();
     }
 }

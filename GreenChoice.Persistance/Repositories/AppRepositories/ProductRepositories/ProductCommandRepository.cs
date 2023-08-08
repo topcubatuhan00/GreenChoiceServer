@@ -1,17 +1,36 @@
-﻿using GreenChoice.Domain.Models.ProductModels;
+﻿using GreenChoice.Domain.Entities;
 using GreenChoice.Domain.Repositories.ProductRepositories;
+using Microsoft.Data.SqlClient;
 
 namespace GreenChoice.Persistance.Repositories.AppRepositories.ProductRepositories;
 
 public class ProductCommandRepository : Repository, IProductCommandRepository
 {
-    public async Task AddAsync(CreateProductModel model)
+    #region Ctor
+    public ProductCommandRepository(SqlConnection context, SqlTransaction transaction)
     {
-        var query = "INSERT INTO [Campaign]" +
-            "(CreatedDate,CreatorName,DeletedDate,DeleterName,UpdatedDate,UpdaterName) VALUES" +
+        this._context = context;
+        this._transaction = transaction;
+    }
+    #endregion
+    public async Task AddAsync(Product model)
+    {
+        var query = "INSERT INTO [Product]" +
+            "(Name, Description, CategoryId, BrandName, Barcode, PackageInformation, ProductionProcessInformation, SustainabilityScore, AverageScore," +
+            "CreatedDate,CreatorName,DeletedDate,DeleterName,UpdatedDate,UpdaterName) VALUES" +
+            "(@name, @description, @categoryId, @brandName, @barcode, @packageInformation, @productionProcessInformation, @sustainabilityScore, @averageScore," +
             "@createddate,@creatorname,@deletedDate,@deletername,@updatedate,@updatername);" +
             "SELECT SCOPE_IDENTITY();";
         var command = CreateCommand(query);
+        command.Parameters.AddWithValue("@name", model.Name);
+        command.Parameters.AddWithValue("@description", model.Description);
+        command.Parameters.AddWithValue("@categoryId", model.CategoryId);
+        command.Parameters.AddWithValue("@brandName", model.BrandName);
+        command.Parameters.AddWithValue("@barcode", model.Barcode);
+        command.Parameters.AddWithValue("@packageInformation", model.PackageInformation);
+        command.Parameters.AddWithValue("@productionProcessInformation", model.ProductionProcessInformation);
+        command.Parameters.AddWithValue("@sustainabilityScore", model.SustainabilityScore);
+        command.Parameters.AddWithValue("@averageScore", model.AverageScore);
         command.Parameters.AddWithValue("@createddate", DateTime.Now);
         command.Parameters.AddWithValue("@creatorname", model.CreatorName);
         command.Parameters.AddWithValue("@deletedDate", DBNull.Value);
@@ -23,11 +42,31 @@ public class ProductCommandRepository : Repository, IProductCommandRepository
 
     public async Task RemoveByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        var command = CreateCommand("delete from [Product] where Id=@id");
+        command.Parameters.AddWithValue("@id", id);
+        await command.ExecuteNonQueryAsync();
     }
 
-    public async Task UpdateAsync(UpdateProductModel model)
+    public async Task UpdateAsync(Product model)
     {
-        throw new NotImplementedException();
+        var query = "update [Product] set " +
+            "Name=@name,Description=@description,CategoryId=@categoryId," +
+            "BrandName=@brandName,Barcode=@barcode,PackageInformation=@packageInformation," +
+            "ProductionProcessInformation=@productionProcessInformation, " +
+            "SustainabilityScore=@sustainabilityScore,AverageScore=@averageScore " +
+            "where Id=@id";
+        var command = CreateCommand(query);
+        command.Parameters.AddWithValue("@id", model.Id);
+        command.Parameters.AddWithValue("@name", model.Name);
+        command.Parameters.AddWithValue("@description", model.Description);
+        command.Parameters.AddWithValue("@categoryId", model.CategoryId);
+        command.Parameters.AddWithValue("@brandName", model.BrandName);
+        command.Parameters.AddWithValue("@barcode", model.Barcode);
+        command.Parameters.AddWithValue("@packageInformation", model.PackageInformation);
+        command.Parameters.AddWithValue("@productionProcessInformation", model.ProductionProcessInformation);
+        command.Parameters.AddWithValue("@sustainabilityScore", model.SustainabilityScore);
+        command.Parameters.AddWithValue("@averageScore", model.AverageScore);
+
+        await command.ExecuteNonQueryAsync();
     }
 }

@@ -1,35 +1,91 @@
-﻿using GreenChoice.Domain.Dtos.Response;
+﻿using AutoMapper;
+using GreenChoice.Domain.Dtos.Response;
 using GreenChoice.Domain.Entities;
 using GreenChoice.Domain.Helpers;
 using GreenChoice.Domain.Models.HelperModels;
 using GreenChoice.Domain.Models.UserModels;
+using GreenChoice.Domain.UnitOfWork;
 
 namespace GreenChoice.Application.Services;
 
 public class UserService : IUserService
 {
-    public Task Create(CreateUserModel model)
+    #region Fields
+    private readonly IMapper _mapper;
+    private readonly IUnitOfWork _unitOfWork;
+    #endregion
+
+    #region Ctor
+    public UserService(IUnitOfWork unitOfWork, IMapper mapper)
     {
-        throw new NotImplementedException();
+        _unitOfWork = unitOfWork;
+        _mapper = mapper;
+    }
+    #endregion
+
+    public async Task Create(CreateUserModel model)
+    {
+        using (var context = _unitOfWork.Create())
+        {
+            var check = await context.Repositories.userQueryRepository.GetByUserName(model.UserName);
+            if (check != null) throw new Exception("Already Defined User");
+
+            var entity = _mapper.Map<User>(model);
+            await context.Repositories.userCommandRepository.AddAsync(entity);
+
+            context.SaveChanges();
+        }
     }
 
-    public Task<ResponseDto<PaginationHelper<User>>> GetAll(PaginationRequest request)
+    public async Task<ResponseDto<PaginationHelper<User>>> GetAll(PaginationRequest request)
     {
-        throw new NotImplementedException();
+        using (var context = _unitOfWork.Create())
+        {
+            var result = context.Repositories.userQueryRepository.GetAll(request);
+
+            var paginationHelper = new PaginationHelper<User>(result.TotalCount, request.PageSize, request.PageNumber, null);
+
+            var users = result.Items.Select(item => _mapper.Map<User>(item)).ToList();
+
+            paginationHelper.Items = users;
+
+            return ResponseDto<PaginationHelper<User>>.Success(paginationHelper, 200);
+        }
     }
 
-    public Task<ResponseDto<User>> GetById(int id)
+    public async Task<ResponseDto<User>> GetById(int id)
     {
-        throw new NotImplementedException();
+        using (var context = _unitOfWork.Create())
+        {
+            var result = await context.Repositories.userQueryRepository.GetById(id);
+            return ResponseDto<User>.Success(result, 200);
+        }
     }
 
-    public Task Remove(int id)
+    public async Task Remove(int id)
     {
-        throw new NotImplementedException();
+        using (var context = _unitOfWork.Create())
+        {
+            var check = await context.Repositories.userQueryRepository.GetById(id);
+            if (check == null) throw new Exception("Not Found");
+
+            await context.Repositories.userCommandRepository.RemoveById(id);
+            context.SaveChanges();
+        }
     }
 
-    public Task Update(UpdateUserModel model)
+    public async Task Update(UpdateUserModel model)
     {
-        throw new NotImplementedException();
+        using (var context = _unitOfWork.Create())
+        {
+            var check = await context.Repositories.userQueryRepository.GetById(model.Id);
+            if (check == null) throw new Exception("Not Found");
+
+            var entity = _mapper.Map<User>(model);
+            entity.UpdatedDate = DateTime.Now;
+            entity.UpdaterName = "Admin";
+            context.Repositories.userCommandRepository.Update(entity);
+            context.SaveChanges();
+        }
     }
 }
