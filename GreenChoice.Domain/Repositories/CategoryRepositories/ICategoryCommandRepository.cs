@@ -1,5 +1,4 @@
 ﻿using GreenChoice.Domain.Entities;
-using GreenChoice.Domain.Models.CategoryModels;
 
 namespace GreenChoice.Domain.Repositories.CategoryRepositories;
 

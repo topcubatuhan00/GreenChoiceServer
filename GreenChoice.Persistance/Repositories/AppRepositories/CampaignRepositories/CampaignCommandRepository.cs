@@ -4,7 +4,7 @@ using Microsoft.Data.SqlClient;
 
 namespace GreenChoice.Persistance.Repositories.AppRepositories.CampaignRepositories;
 
-public class CampaignCommandRepository :Repository, ICampaignCommandRepository
+public class CampaignCommandRepository : Repository, ICampaignCommandRepository
 {
     public CampaignCommandRepository(SqlConnection context, SqlTransaction transaction)
     {

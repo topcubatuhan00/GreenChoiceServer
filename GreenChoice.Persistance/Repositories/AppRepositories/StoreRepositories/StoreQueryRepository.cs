@@ -6,7 +6,7 @@ using Microsoft.Data.SqlClient;
 
 namespace GreenChoice.Persistance.Repositories.AppRepositories.StoreRepositories;
 
-public class StoreQueryRepository :Repository, IStoreQueryRepository
+public class StoreQueryRepository : Repository, IStoreQueryRepository
 {
     #region Ctor
     public StoreQueryRepository(SqlConnection context, SqlTransaction transaction)

@@ -1,5 +1,4 @@
 ﻿using GreenChoice.Application.Services;
-using GreenChoice.Domain.Models.CommentModels;
 using GreenChoice.Domain.Models.HelperModels;
 using GreenChoice.Domain.Models.UserCampaignRSModels;
 using GreenChoice.WebApi.CustomControllerBase;

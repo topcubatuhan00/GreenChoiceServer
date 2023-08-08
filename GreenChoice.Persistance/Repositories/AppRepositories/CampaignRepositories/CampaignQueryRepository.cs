@@ -50,13 +50,13 @@ public class CampaignQueryRepository : Repository, ICampaignQueryRepository
             if (reader.HasRows && reader.Read())
             {
                 return new Campaign
-            {
-                Id = Convert.ToInt32(reader["Id"]),
-                Name = reader["Name"] != DBNull.Value ? reader["Name"].ToString() : string.Empty,
-                Description = reader["Description"] != DBNull.Value ? reader["Description"].ToString() : string.Empty,
-                BeginDate = reader["BeginDate"] != DBNull.Value ? (DateTime)reader["BeginDate"] : DateTime.MinValue,
-                EndDate = reader["EndDate"] != DBNull.Value ? (DateTime)reader["EndDate"] : DateTime.MinValue
-            };
+                {
+                    Id = Convert.ToInt32(reader["Id"]),
+                    Name = reader["Name"] != DBNull.Value ? reader["Name"].ToString() : string.Empty,
+                    Description = reader["Description"] != DBNull.Value ? reader["Description"].ToString() : string.Empty,
+                    BeginDate = reader["BeginDate"] != DBNull.Value ? (DateTime)reader["BeginDate"] : DateTime.MinValue,
+                    EndDate = reader["EndDate"] != DBNull.Value ? (DateTime)reader["EndDate"] : DateTime.MinValue
+                };
             }
             else
             {

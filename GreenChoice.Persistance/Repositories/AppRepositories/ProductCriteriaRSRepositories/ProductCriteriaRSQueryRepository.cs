@@ -6,7 +6,7 @@ using Microsoft.Data.SqlClient;
 
 namespace GreenChoice.Persistance.Repositories.AppRepositories.ProductCriteriaRSRepositories;
 
-public class ProductCriteriaRSQueryRepository : Repository,IProductCriteriaRSQueryRepository
+public class ProductCriteriaRSQueryRepository : Repository, IProductCriteriaRSQueryRepository
 {
     #region Ctor
     public ProductCriteriaRSQueryRepository(SqlConnection context, SqlTransaction transaction)

@@ -29,7 +29,7 @@ public interface IUnitOfWorkRepository
 
     #region CommentRepositories
     ICommentCommandRepository commentCommandRepository { get; }
-    ICommentQueryRepository commentQueryRepository { get;}
+    ICommentQueryRepository commentQueryRepository { get; }
     #endregion
 
     #region ProductCriteriaRSRepositories
@@ -48,8 +48,8 @@ public interface IUnitOfWorkRepository
     #endregion
 
     #region SustainabilityCriteriaRepositories
-    ISustainabilityCriteriaCommandRepository sustainabilityCriteriaCommandRepository { get;}
-    ISustainabilityCriteriaQueryRepository sustainabilityCriteriaQueryRepository { get;}
+    ISustainabilityCriteriaCommandRepository sustainabilityCriteriaCommandRepository { get; }
+    ISustainabilityCriteriaQueryRepository sustainabilityCriteriaQueryRepository { get; }
     #endregion
 
     #region UserCampaignRSRepositories

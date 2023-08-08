@@ -1,5 +1,4 @@
 ﻿using GreenChoice.Application.Services;
-using GreenChoice.Domain.Entities;
 using GreenChoice.Domain.Models.CampaignModels;
 using GreenChoice.Domain.Models.HelperModels;
 using GreenChoice.WebApi.CustomControllerBase;

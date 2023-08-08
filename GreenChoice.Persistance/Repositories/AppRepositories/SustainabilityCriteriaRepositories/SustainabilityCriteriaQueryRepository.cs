@@ -6,7 +6,7 @@ using Microsoft.Data.SqlClient;
 
 namespace GreenChoice.Persistance.Repositories.AppRepositories.SustainabilityCriteriaRepositories;
 
-public class SustainabilityCriteriaQueryRepository :Repository, ISustainabilityCriteriaQueryRepository
+public class SustainabilityCriteriaQueryRepository : Repository, ISustainabilityCriteriaQueryRepository
 {
     #region Ctor
     public SustainabilityCriteriaQueryRepository(SqlConnection context, SqlTransaction transaction)

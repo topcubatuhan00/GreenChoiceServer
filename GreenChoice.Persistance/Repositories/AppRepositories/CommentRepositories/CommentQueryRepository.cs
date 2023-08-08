@@ -6,7 +6,7 @@ using Microsoft.Data.SqlClient;
 
 namespace GreenChoice.Persistance.Repositories.AppRepositories.CommentRepositories;
 
-public class CommentQueryRepository :Repository, ICommentQueryRepository
+public class CommentQueryRepository : Repository, ICommentQueryRepository
 {
     #region Ctor
     public CommentQueryRepository(SqlConnection context, SqlTransaction transaction)
