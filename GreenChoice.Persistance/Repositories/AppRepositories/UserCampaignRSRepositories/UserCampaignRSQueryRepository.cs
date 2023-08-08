@@ -17,11 +17,44 @@ public class UserCampaignRSQueryRepository : Repository, IUserCampaignRSQueryRep
     #endregion
     public PaginationHelper<UserCampaignRS> GetAll(PaginationRequest request)
     {
-        throw new NotImplementedException();
+        var command = CreateCommand("SELECT COUNT(*) FROM [UserCampaignRS]");
+        int totalCount = (int)command.ExecuteScalar();
+
+        command.CommandText = $"SELECT * FROM [UserCampaignRS] ORDER BY Id OFFSET {((request.PageNumber - 1) * request.PageSize)} ROWS FETCH NEXT {request.PageSize} ROWS ONLY";
+        using (var reader = command.ExecuteReader())
+        {
+            List<UserCampaignRS> rs = new List<UserCampaignRS>();
+            while (reader.Read())
+            {
+                rs.Add(new UserCampaignRS
+                {
+                    Id = Convert.ToInt32(reader["Id"]),
+                    CampaignId = Convert.ToInt32(reader["CampaignId"]),
+                    UserId = Convert.ToInt32(reader["UserId"]),
+                });
+            }
+            return new PaginationHelper<UserCampaignRS>(totalCount, request.PageSize, request.PageNumber, rs);
+        }
     }
 
-    public Task<UserCampaignRS> GetById(int Id)
+    public async Task<UserCampaignRS> GetById(int Id)
     {
-        throw new NotImplementedException();
+        var command = CreateCommand("SELECT * FROM [UserCampaignRS] WHERE Id = @id");
+        command.Parameters.AddWithValue("@id", Id);
+
+        using (var reader = command.ExecuteReader())
+        {
+            if (reader.HasRows && reader.Read())
+            {
+                return new UserCampaignRS
+                {
+                    Id = Convert.ToInt32(reader["Id"]),
+                    CampaignId = Convert.ToInt32(reader["CampaignId"]),
+                    UserId = Convert.ToInt32(reader["UserId"]),
+                };
+            }
+            else
+                return null;
+        }
     }
 }
