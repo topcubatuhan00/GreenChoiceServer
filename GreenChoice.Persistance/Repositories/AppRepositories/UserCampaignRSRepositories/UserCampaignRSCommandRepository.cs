@@ -1,4 +1,5 @@
-﻿using GreenChoice.Domain.Models.UserCampaignRSModels;
+﻿using GreenChoice.Domain.Entities;
+using GreenChoice.Domain.Models.UserCampaignRSModels;
 using GreenChoice.Domain.Repositories.UserCampaignRSRepositories;
 using Microsoft.Data.SqlClient;
 
@@ -13,13 +14,15 @@ public class UserCampaignRSCommandRepository : Repository, IUserCampaignRSComman
         this._transaction = transaction;
     }
     #endregion
-    public async Task AddAsync(CreateUserCampaignRSModel model)
+    public async Task AddAsync(UserCampaignRS model)
     {
-        var query = "INSERT INTO [Campaign]" +
-            "(CreatedDate,CreatorName,DeletedDate,DeleterName,UpdatedDate,UpdaterName) VALUES" +
-            "@createddate,@creatorname,@deletedDate,@deletername,@updatedate,@updatername);" +
+        var query = "INSERT INTO [UserCampaignRS]" +
+            "(UserId, CampaignId, CreatedDate,CreatorName,DeletedDate,DeleterName,UpdatedDate,UpdaterName) VALUES" +
+            "(@userId, @campaignId, @createddate,@creatorname,@deletedDate,@deletername,@updatedate,@updatername);" +
             "SELECT SCOPE_IDENTITY();";
         var command = CreateCommand(query);
+        command.Parameters.AddWithValue("@userId", model.UserId);
+        command.Parameters.AddWithValue("@campaignId", model.CampaignId);
         command.Parameters.AddWithValue("@createddate", DateTime.Now);
         command.Parameters.AddWithValue("@creatorname", model.CreatorName);
         command.Parameters.AddWithValue("@deletedDate", DBNull.Value);
@@ -29,13 +32,21 @@ public class UserCampaignRSCommandRepository : Repository, IUserCampaignRSComman
         await command.ExecuteNonQueryAsync();
     }
 
-    public Task RemoveByIdAsync(int id)
+    public async Task RemoveByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        var command = CreateCommand("delete from [UserCampaignRS] where Id=@id");
+        command.Parameters.AddWithValue("@id", id);
+        await command.ExecuteNonQueryAsync();
     }
 
-    public Task UpdateAsync(UpdateUserCampaignRSModel model)
+    public async Task UpdateAsync(UserCampaignRS model)
     {
-        throw new NotImplementedException();
+        var query = "update [UserCampaignRS] set UserId=@userId, CampaignId=@campaignId where Id=@id";
+        var command = CreateCommand(query);
+        command.Parameters.AddWithValue("@id", model.Id);
+        command.Parameters.AddWithValue("@userId", model.UserId);
+        command.Parameters.AddWithValue("@campaignId", model.CampaignId);
+
+        await command.ExecuteNonQueryAsync();
     }
 }

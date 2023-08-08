@@ -1,4 +1,5 @@
-﻿using GreenChoice.Domain.Models.StoreModels;
+﻿using GreenChoice.Domain.Entities;
+using GreenChoice.Domain.Models.StoreModels;
 using GreenChoice.Domain.Repositories.StoreRepositories;
 using Microsoft.Data.SqlClient;
 
@@ -13,13 +14,17 @@ public class StoreCommandRepository : Repository, IStoreCommandRepository
         this._transaction = transaction;
     }
     #endregion
-    public async Task AddAsync(CreateStoreModel model)
+    public async Task AddAsync(Store model)
     {
-        var query = "INSERT INTO [Campaign]" +
-            "(CreatedDate,CreatorName,DeletedDate,DeleterName,UpdatedDate,UpdaterName) VALUES" +
-            "@createddate,@creatorname,@deletedDate,@deletername,@updatedate,@updatername);" +
+        var query = "INSERT INTO [Store]" +
+            "(Name, Adress, PhoneNumber, IsOnlineAvailable,CreatedDate,CreatorName,DeletedDate,DeleterName,UpdatedDate,UpdaterName) VALUES" +
+            "(@name, @adress, @phone, @online, @createddate,@creatorname,@deletedDate,@deletername,@updatedate,@updatername);" +
             "SELECT SCOPE_IDENTITY();";
         var command = CreateCommand(query);
+        command.Parameters.AddWithValue("@name", model.Name);
+        command.Parameters.AddWithValue("@adress", model.Adress);
+        command.Parameters.AddWithValue("@phone", model.PhoneNumber);
+        command.Parameters.AddWithValue("@online", model.IsOnlineAvailable);
         command.Parameters.AddWithValue("@createddate", DateTime.Now);
         command.Parameters.AddWithValue("@creatorname", model.CreatorName);
         command.Parameters.AddWithValue("@deletedDate", DBNull.Value);
@@ -29,13 +34,23 @@ public class StoreCommandRepository : Repository, IStoreCommandRepository
         await command.ExecuteNonQueryAsync();
     }
 
-    public Task RemoveByIdAsync(int id)
+    public async Task RemoveByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        var command = CreateCommand("delete from [Store] where Id=@id");
+        command.Parameters.AddWithValue("@id", id);
+        await command.ExecuteNonQueryAsync();
     }
 
-    public Task UpdateAsync(UpdateStoreModel model)
+    public async Task UpdateAsync(Store model)
     {
-        throw new NotImplementedException();
+        var query = "update [Store] set Name=@name, Adress=@adress, PhoneNumber=@phoneNumber, IsOnlineAvailable=@online where Id=@id";
+        var command = CreateCommand(query);
+        command.Parameters.AddWithValue("@id", model.Id);
+        command.Parameters.AddWithValue("@name", model.Name);
+        command.Parameters.AddWithValue("@adress", model.Adress);
+        command.Parameters.AddWithValue("@phoneNumber", model.PhoneNumber);
+        command.Parameters.AddWithValue("@online", model.IsOnlineAvailable);
+
+        await command.ExecuteNonQueryAsync();
     }
 }
