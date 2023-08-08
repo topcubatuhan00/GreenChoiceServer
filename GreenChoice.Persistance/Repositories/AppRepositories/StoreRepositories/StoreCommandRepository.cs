@@ -1,10 +1,18 @@
 ﻿using GreenChoice.Domain.Models.StoreModels;
 using GreenChoice.Domain.Repositories.StoreRepositories;
+using Microsoft.Data.SqlClient;
 
 namespace GreenChoice.Persistance.Repositories.AppRepositories.StoreRepositories;
 
 public class StoreCommandRepository : Repository, IStoreCommandRepository
 {
+    #region Ctor
+    public StoreCommandRepository(SqlConnection context, SqlTransaction transaction)
+    {
+        this._context = context;
+        this._transaction = transaction;
+    }
+    #endregion
     public async Task AddAsync(CreateStoreModel model)
     {
         var query = "INSERT INTO [Campaign]" +

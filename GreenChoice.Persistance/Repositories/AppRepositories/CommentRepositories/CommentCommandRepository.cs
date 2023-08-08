@@ -1,10 +1,18 @@
 ﻿using GreenChoice.Domain.Models.CommentModels;
 using GreenChoice.Domain.Repositories.CommentRepositories;
+using Microsoft.Data.SqlClient;
 
 namespace GreenChoice.Persistance.Repositories.AppRepositories.CommentRepositories;
 
 public class CommentCommandRepository : Repository, ICommentCommandRepository
 {
+    #region Ctor
+    public CommentCommandRepository(SqlConnection context, SqlTransaction transaction)
+    {
+        this._context = context;
+        this._transaction = transaction;
+    }
+    #endregion
     public async Task AddAsync(CreateCommentModel model)
     {
         var query = "INSERT INTO [Campaign]" +

@@ -1,10 +1,18 @@
 ﻿using GreenChoice.Domain.Models.ProductModels;
 using GreenChoice.Domain.Repositories.ProductRepositories;
+using Microsoft.Data.SqlClient;
 
 namespace GreenChoice.Persistance.Repositories.AppRepositories.ProductRepositories;
 
 public class ProductCommandRepository : Repository, IProductCommandRepository
 {
+    #region Ctor
+    public ProductCommandRepository(SqlConnection context, SqlTransaction transaction)
+    {
+        this._context = context;
+        this._transaction = transaction;
+    }
+    #endregion
     public async Task AddAsync(CreateProductModel model)
     {
         var query = "INSERT INTO [Campaign]" +

@@ -1,10 +1,18 @@
 ﻿using GreenChoice.Domain.Models.SustainabilityCriteriaModels;
 using GreenChoice.Domain.Repositories.SustainabilityCriteriaRepositories;
+using Microsoft.Data.SqlClient;
 
 namespace GreenChoice.Persistance.Repositories.AppRepositories.SustainabilityCriteriaRepositories;
 
 public class SustainabilityCriteriaCommandRepository : Repository, ISustainabilityCriteriaCommandRepository
 {
+    #region Ctor
+    public SustainabilityCriteriaCommandRepository(SqlConnection context, SqlTransaction transaction)
+    {
+        this._context = context;
+        this._transaction = transaction;
+    }
+    #endregion
     public async Task AddAsync(CreateSustainabilityCriteriaModel model)
     {
         var query = "INSERT INTO [Campaign]" +
