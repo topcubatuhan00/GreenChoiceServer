@@ -20,8 +20,4 @@
 		<ProjectReference Include="..\GreenChoice.Persistance\GreenChoice.Persistance.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Content\Images\" />
-	</ItemGroup>
-
 </Project>
