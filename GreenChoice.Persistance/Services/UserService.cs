@@ -2,6 +2,7 @@
 using GreenChoice.Domain.Dtos.Response;
 using GreenChoice.Domain.Entities;
 using GreenChoice.Domain.Helpers;
+using GreenChoice.Domain.Models.AuthModels;
 using GreenChoice.Domain.Models.HelperModels;
 using GreenChoice.Domain.Models.UserModels;
 using GreenChoice.Domain.UnitOfWork;
@@ -82,6 +83,7 @@ public class UserService : IUserService
             if (check == null) throw new Exception("Not Found");
 
             var entity = _mapper.Map<User>(model);
+            entity.Password = BCrypt.Net.BCrypt.HashPassword(model.Password);
             entity.UpdatedDate = DateTime.Now;
             entity.UpdaterName = "Admin";
             context.Repositories.userCommandRepository.Update(entity);

@@ -64,7 +64,16 @@ public class UserCommandRepository : Repository, IUserCommandRepository
 
     public void Update(User entity)
     {
-        throw new NotImplementedException();
+        var query = "update [User] set UserName=@uname,Password=@pass,Email=@email,Photo=@photo,Role=@role where Id=@id";
+        var command = CreateCommand(query);
+        command.Parameters.AddWithValue("@uname", entity.UserName);
+        command.Parameters.AddWithValue("@pass", entity.Password);
+        command.Parameters.AddWithValue("@email", entity.Email);
+        command.Parameters.AddWithValue("@photo", entity.Photo);
+        command.Parameters.AddWithValue("@role", entity.Role);
+        command.Parameters.AddWithValue("@id", entity.Id);
+
+        command.ExecuteNonQuery();
     }
 
     public void UpdatePassword(User entity)

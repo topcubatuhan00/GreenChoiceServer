@@ -9,6 +9,7 @@ using GreenChoice.Domain.Models.ProductModels;
 using GreenChoice.Domain.Models.StoreModels;
 using GreenChoice.Domain.Models.SustainabilityCriteriaModels;
 using GreenChoice.Domain.Models.UserCampaignRSModels;
+using GreenChoice.Domain.Models.UserModels;
 
 namespace GreenChoice.Persistance.Mapping;
 
@@ -18,6 +19,7 @@ public partial class MappingProfile : Profile
     {
         #region User
         CreateMap<User, UserRegisterModel>().ReverseMap();
+        CreateMap<User, UpdateUserModel>().ReverseMap();
         #endregion
 
         #region Campaign
