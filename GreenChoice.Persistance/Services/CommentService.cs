@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using GreenChoice.Domain.Dtos;
 using GreenChoice.Domain.Dtos.Response;
 using GreenChoice.Domain.Entities;
 using GreenChoice.Domain.Helpers;
@@ -34,28 +35,28 @@ public class CommentService : ICommentService
         }
     }
 
-    public async Task<ResponseDto<PaginationHelper<Comment>>> GetAll(PaginationRequest request)
+    public async Task<ResponseDto<PaginationHelper<CommentReponseDto>>> GetAll(PaginationRequest request)
     {
         using (var context = _unitOfWork.Create())
         {
             var result = context.Repositories.commentQueryRepository.GetAll(request);
 
-            var paginationHelper = new PaginationHelper<Comment>(result.TotalCount, request.PageSize, request.PageNumber, null);
+            var paginationHelper = new PaginationHelper<CommentReponseDto>(result.TotalCount, request.PageSize, request.PageNumber, null);
 
-            var Comments = result.Items.Select(item => _mapper.Map<Comment>(item)).ToList();
+            var Comments = result.Items.Select(item => _mapper.Map<CommentReponseDto>(item)).ToList();
 
             paginationHelper.Items = Comments;
 
-            return ResponseDto<PaginationHelper<Comment>>.Success(paginationHelper, 200);
+            return ResponseDto<PaginationHelper<CommentReponseDto>>.Success(paginationHelper, 200);
         }
     }
 
-    public async Task<ResponseDto<Comment>> GetById(int id)
+    public async Task<ResponseDto<CommentReponseDto>> GetById(int id)
     {
         using (var context = _unitOfWork.Create())
         {
             var result = await context.Repositories.commentQueryRepository.GetById(id);
-            return ResponseDto<Comment>.Success(result, 200);
+            return ResponseDto<CommentReponseDto>.Success(result, 200);
         }
     }
 

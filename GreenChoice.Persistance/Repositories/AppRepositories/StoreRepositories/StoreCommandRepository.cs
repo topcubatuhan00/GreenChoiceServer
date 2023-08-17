@@ -21,7 +21,7 @@ public class StoreCommandRepository : Repository, IStoreCommandRepository
             "SELECT SCOPE_IDENTITY();";
         var command = CreateCommand(query);
         command.Parameters.AddWithValue("@name", model.Name);
-        command.Parameters.AddWithValue("@adress", model.Adress);
+        command.Parameters.AddWithValue("@adress", model.Address);
         command.Parameters.AddWithValue("@phone", model.PhoneNumber);
         command.Parameters.AddWithValue("@online", model.IsOnlineAvailable);
         command.Parameters.AddWithValue("@createddate", DateTime.Now);
@@ -46,7 +46,7 @@ public class StoreCommandRepository : Repository, IStoreCommandRepository
         var command = CreateCommand(query);
         command.Parameters.AddWithValue("@id", model.Id);
         command.Parameters.AddWithValue("@name", model.Name);
-        command.Parameters.AddWithValue("@adress", model.Adress);
+        command.Parameters.AddWithValue("@adress", model.Address);
         command.Parameters.AddWithValue("@phoneNumber", model.PhoneNumber);
         command.Parameters.AddWithValue("@online", model.IsOnlineAvailable);
 

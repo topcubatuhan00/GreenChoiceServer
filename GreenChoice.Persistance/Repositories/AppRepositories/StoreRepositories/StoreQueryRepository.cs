@@ -30,7 +30,7 @@ public class StoreQueryRepository : Repository, IStoreQueryRepository
                 {
                     Id = Convert.ToInt32(reader["Id"]),
                     Name = reader["Name"].ToString(),
-                    Adress = reader["Adress"].ToString(),
+                    Address = reader["Adress"].ToString(),
                     PhoneNumber = reader["PhoneNumber"].ToString(),
                     IsOnlineAvailable = bool.Parse(reader["IsOnlineAvailable"].ToString()),
                 });
@@ -52,7 +52,7 @@ public class StoreQueryRepository : Repository, IStoreQueryRepository
                 {
                     Id = Convert.ToInt32(reader["Id"]),
                     Name = reader["Name"].ToString(),
-                    Adress = reader["Adress"].ToString(),
+                    Address = reader["Adress"].ToString(),
                     PhoneNumber = reader["PhoneNumber"].ToString(),
                     IsOnlineAvailable = bool.Parse(reader["IsOnlineAvailable"].ToString()),
                 };

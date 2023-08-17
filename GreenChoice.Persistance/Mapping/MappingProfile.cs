@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using GreenChoice.Domain.Dtos;
 using GreenChoice.Domain.Entities;
 using GreenChoice.Domain.Models.AuthModels;
 using GreenChoice.Domain.Models.CampaignModels;
@@ -35,6 +36,7 @@ public partial class MappingProfile : Profile
         #region Comment
         CreateMap<Comment, CreateCommentModel>().ReverseMap();
         CreateMap<Comment, UpdateCommentModel>().ReverseMap();
+        CreateMap<Comment, CommentReponseDto>().ReverseMap();
         #endregion
 
         #region Product

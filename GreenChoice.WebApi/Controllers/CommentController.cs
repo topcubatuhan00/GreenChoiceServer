@@ -25,17 +25,17 @@ public class CommentController : CustomBaseController
     [HttpGet("[action]")]
     public async Task<IActionResult> GetAll([FromQuery] PaginationRequest request)
     {
-        var categories = await _commentService.GetAll(request);
+        var comment = await _commentService.GetAll(request);
 
-        return CreateActionResultInstance(categories);
+        return CreateActionResultInstance(comment);
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(int id)
     {
-        var category = await _commentService.GetById(id);
+        var comment = await _commentService.GetById(id);
 
-        return CreateActionResultInstance(category);
+        return CreateActionResultInstance(comment);
     }
     #endregion
 
