@@ -2,7 +2,6 @@
 using GreenChoice.Domain.Helpers;
 using GreenChoice.Domain.Models.HelperModels;
 using GreenChoice.Domain.Repositories.CategoryRepositories;
-using GreenChoice.Domain.Repositories.SettingsRepositories;
 using Microsoft.Data.SqlClient;
 
 namespace GreenChoice.Persistance.Repositories.AppRepositories.CategoryRepositories;

@@ -1,6 +1,5 @@
 ﻿using GreenChoice.Domain.Dtos;
 using GreenChoice.Domain.Dtos.Response;
-using GreenChoice.Domain.Entities;
 using GreenChoice.Domain.Helpers;
 using GreenChoice.Domain.Models.CommentModels;
 using GreenChoice.Domain.Models.HelperModels;

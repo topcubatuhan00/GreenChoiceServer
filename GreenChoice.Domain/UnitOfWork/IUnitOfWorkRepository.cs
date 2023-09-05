@@ -60,6 +60,6 @@ public interface IUnitOfWorkRepository
 
     #region SettingsRepositories
     ISettingsCommandRepository settingsCommandRepository { get; }
-    ISettingsQueryRepository settingsQueryRepository { get;}
+    ISettingsQueryRepository settingsQueryRepository { get; }
     #endregion
 }

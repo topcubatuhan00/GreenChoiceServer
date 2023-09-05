@@ -1,8 +1,8 @@
 ﻿using GreenChoice.Application.Services;
+using GreenChoice.Domain.Entities;
 using GreenChoice.Domain.Models.HelperModels;
 using GreenChoice.WebApi.CustomControllerBase;
 using Microsoft.AspNetCore.Mvc;
-using GreenChoice.Domain.Entities;
 
 namespace GreenChoice.WebApi.Controllers;
 

@@ -2,7 +2,6 @@
 using GreenChoice.Domain.Dtos.Response;
 using GreenChoice.Domain.Entities;
 using GreenChoice.Domain.Helpers;
-using GreenChoice.Domain.Models.AuthModels;
 using GreenChoice.Domain.Models.HelperModels;
 using GreenChoice.Domain.Models.UserModels;
 using GreenChoice.Domain.UnitOfWork;
