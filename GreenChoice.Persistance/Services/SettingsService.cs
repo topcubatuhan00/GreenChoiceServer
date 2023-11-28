@@ -4,6 +4,7 @@ using GreenChoice.Domain.Dtos.Response;
 using GreenChoice.Domain.Entities;
 using GreenChoice.Domain.Helpers;
 using GreenChoice.Domain.Models.HelperModels;
+using GreenChoice.Domain.Models.SettingModels;
 using GreenChoice.Domain.UnitOfWork;
 
 namespace GreenChoice.Persistance.Services;
@@ -24,13 +25,15 @@ public class SettingsService : ISettingsService
     #endregion
 
     #region Methods
-    public async Task Create(Settings model)
+    public async Task Create(SettingCreateModel model)
     {
         using var context = _unitOfWork.Create();
         var check = await context.Repositories.settingsQueryRepository.GetByName(model.Name);
         if (check != null) throw new Exception("Already Defined Settings");
 
-        await context.Repositories.settingsCommandRepository.AddAsync(model);
+        var settings = _mapper.Map<Settings>(model);
+
+        await context.Repositories.settingsCommandRepository.AddAsync(settings);
 
         context.SaveChanges();
     }

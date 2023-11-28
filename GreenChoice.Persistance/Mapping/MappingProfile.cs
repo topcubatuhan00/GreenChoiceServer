@@ -7,6 +7,7 @@ using GreenChoice.Domain.Models.CategoryModels;
 using GreenChoice.Domain.Models.CommentModels;
 using GreenChoice.Domain.Models.ProductCriteriaRSModels;
 using GreenChoice.Domain.Models.ProductModels;
+using GreenChoice.Domain.Models.SettingModels;
 using GreenChoice.Domain.Models.StoreModels;
 using GreenChoice.Domain.Models.SustainabilityCriteriaModels;
 using GreenChoice.Domain.Models.UserCampaignRSModels;
@@ -62,6 +63,10 @@ public partial class MappingProfile : Profile
         #region UserCampaignRS
         CreateMap<UserCampaignRS, CreateUserCampaignRSModel>().ReverseMap();
         CreateMap<UserCampaignRS, UpdateUserCampaignRSModel>().ReverseMap();
+        #endregion
+
+        #region Settings
+        CreateMap<Settings, SettingCreateModel>().ReverseMap();
         #endregion
     }
 }

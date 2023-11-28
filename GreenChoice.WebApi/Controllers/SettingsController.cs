@@ -1,6 +1,7 @@
 ﻿using GreenChoice.Application.Services;
 using GreenChoice.Domain.Entities;
 using GreenChoice.Domain.Models.HelperModels;
+using GreenChoice.Domain.Models.SettingModels;
 using GreenChoice.WebApi.CustomControllerBase;
 using Microsoft.AspNetCore.Mvc;
 
@@ -47,7 +48,7 @@ public class SettingsController : CustomBaseController
     }
 
     [HttpPost("[action]")]
-    public async Task<IActionResult> Create(Settings model)
+    public async Task<IActionResult> Create(SettingCreateModel model)
     {
         await _settingsService.Create(model);
         return Ok(model);
