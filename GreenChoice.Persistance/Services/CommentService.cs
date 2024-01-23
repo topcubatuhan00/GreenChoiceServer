@@ -60,6 +60,15 @@ public class CommentService : ICommentService
         }
     }
 
+    public async Task<ResponseDto<IList<CommentReponseDto>>> GetForHome(int commentCount)
+    {
+        using (var context = _unitOfWork.Create())
+        {
+            var result = await context.Repositories.commentQueryRepository.GetForHome(commentCount);
+            return ResponseDto<IList<CommentReponseDto>>.Success(result, 200);
+        }
+    }
+
     public async Task Remove(int id)
     {
         using (var context = _unitOfWork.Create())

@@ -8,4 +8,5 @@ public interface IStoreQueryRepository
 {
     PaginationHelper<Store> GetAll(PaginationRequest request);
     Task<Store> GetById(int Id);
+    Task<IList<Store>> GetForHome(int storeCount);
 }

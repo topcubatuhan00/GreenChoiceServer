@@ -7,4 +7,5 @@ public class CreateStoreModel
     public string PhoneNumber { get; set; }
     public bool IsOnlineAvailable { get; set; }
     public string CreatorName { get; set; }
+    public float AverageScore { get; set; }
 }

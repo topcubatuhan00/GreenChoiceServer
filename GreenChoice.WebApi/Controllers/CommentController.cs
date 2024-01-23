@@ -1,4 +1,5 @@
 ﻿using GreenChoice.Application.Services;
+using GreenChoice.Domain.Core;
 using GreenChoice.Domain.Models.CommentModels;
 using GreenChoice.Domain.Models.HelperModels;
 using GreenChoice.WebApi.CustomControllerBase;
@@ -12,12 +13,18 @@ public class CommentController : CustomBaseController
 {
     #region Fields
     private readonly ICommentService _commentService;
+    private readonly ISettingsService _settingsService;
     #endregion
 
     #region Ctor
-    public CommentController(ICommentService commentService)
+    public CommentController
+    (
+        ICommentService commentService, 
+        ISettingsService settingsService
+    )
     {
         _commentService = commentService;
+        _settingsService = settingsService;
     }
     #endregion
 
@@ -36,6 +43,15 @@ public class CommentController : CustomBaseController
         var comment = await _commentService.GetById(id);
 
         return CreateActionResultInstance(comment);
+    }
+
+    [HttpGet("[action]")]
+    public async Task<IActionResult> GetAllForHomePage()
+    {
+        var settingsCommentSize = await _settingsService.GetByName(SettingsDefaults.BestCommentHome);
+        var products = await _commentService.GetForHome(Convert.ToInt32(settingsCommentSize.Data.Value));
+
+        return CreateActionResultInstance(products);
     }
     #endregion
 

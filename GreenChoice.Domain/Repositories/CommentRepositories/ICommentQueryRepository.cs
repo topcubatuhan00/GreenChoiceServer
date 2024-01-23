@@ -1,4 +1,5 @@
 ﻿using GreenChoice.Domain.Dtos;
+using GreenChoice.Domain.Entities;
 using GreenChoice.Domain.Helpers;
 using GreenChoice.Domain.Models.HelperModels;
 
@@ -8,4 +9,5 @@ public interface ICommentQueryRepository
 {
     PaginationHelper<CommentReponseDto> GetAll(PaginationRequest request);
     Task<CommentReponseDto> GetById(int Id);
+    Task<IList<CommentReponseDto>> GetForHome(int commentCount);
 }

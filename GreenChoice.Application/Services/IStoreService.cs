@@ -13,4 +13,5 @@ public interface IStoreService
     Task Create(CreateStoreModel model);
     Task Update(UpdateStoreModel model);
     Task Remove(int id);
+    Task<ResponseDto<IList<Store>>> GetForHome(int storeCount);
 }

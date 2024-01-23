@@ -1,4 +1,5 @@
-﻿using GreenChoice.Domain.Entities;
+﻿using Azure.Core;
+using GreenChoice.Domain.Entities;
 using GreenChoice.Domain.Helpers;
 using GreenChoice.Domain.Models.HelperModels;
 using GreenChoice.Domain.Repositories.ProductRepositories;
@@ -97,6 +98,33 @@ public class ProductQueryRepository : Repository, IProductQueryRepository
             }
             else
                 return null;
+        }
+    }
+
+    public async Task<IList<Product>> GetForHome(int productCount)
+    {
+        var command = CreateCommand($"SELECT TOP {productCount} * FROM [Product] ORDER BY AverageScore DESC;");
+
+        using (var reader = command.ExecuteReader())
+        {
+            List<Product> products = new List<Product>();
+            while (reader.Read())
+            {
+                products.Add(new Product
+                {
+                    Id = Convert.ToInt32(reader["Id"]),
+                    Name = reader["Name"] != null ? reader["Name"].ToString() : "",
+                    Description = reader["Description"] != null ? reader["Description"].ToString() : "",
+                    CategoryId = Convert.ToInt32(reader["CategoryId"]),
+                    BrandName = reader["Description"] != null ? reader["Description"].ToString() : "",
+                    Barcode = reader["Description"] != null ? reader["Description"].ToString() : "",
+                    PackageInformation = reader["Description"] != null ? reader["Description"].ToString() : "",
+                    ProductionProcessInformation = reader["Description"] != null ? reader["Description"].ToString() : "",
+                    SustainabilityScore = Convert.ToSingle(reader["SustainabilityScore"]),
+                    AverageScore = float.Parse(reader["AverageScore"].ToString()),
+                });
+            }
+            return products;
         }
     }
 }

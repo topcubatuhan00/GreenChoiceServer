@@ -13,17 +13,19 @@ public class StoreCommandRepository : Repository, IStoreCommandRepository
         this._transaction = transaction;
     }
     #endregion
+
     public async Task AddAsync(Store model)
     {
         var query = "INSERT INTO [Store]" +
-            "(Name, Adress, PhoneNumber, IsOnlineAvailable,CreatedDate,CreatorName,DeletedDate,DeleterName,UpdatedDate,UpdaterName) VALUES" +
-            "(@name, @adress, @phone, @online, @createddate,@creatorname,@deletedDate,@deletername,@updatedate,@updatername);" +
+            "(Name, Adress, PhoneNumber, IsOnlineAvailable,AverageScore, CreatedDate,CreatorName,DeletedDate,DeleterName,UpdatedDate,UpdaterName) VALUES" +
+            "(@name, @adress, @phone, @online, @score, @createddate,@creatorname,@deletedDate,@deletername,@updatedate,@updatername);" +
             "SELECT SCOPE_IDENTITY();";
         var command = CreateCommand(query);
         command.Parameters.AddWithValue("@name", model.Name);
         command.Parameters.AddWithValue("@adress", model.Address);
         command.Parameters.AddWithValue("@phone", model.PhoneNumber);
         command.Parameters.AddWithValue("@online", model.IsOnlineAvailable);
+        command.Parameters.AddWithValue("@score", model.AverageScore);
         command.Parameters.AddWithValue("@createddate", DateTime.Now);
         command.Parameters.AddWithValue("@creatorname", model.CreatorName);
         command.Parameters.AddWithValue("@deletedDate", DBNull.Value);
@@ -42,12 +44,13 @@ public class StoreCommandRepository : Repository, IStoreCommandRepository
 
     public async Task UpdateAsync(Store model)
     {
-        var query = "update [Store] set Name=@name, Adress=@adress, PhoneNumber=@phoneNumber, IsOnlineAvailable=@online where Id=@id";
+        var query = "update [Store] set Name=@name, Adress=@adress, PhoneNumber=@phoneNumber, IsOnlineAvailable=@online, AverageScore=@score where Id=@id";
         var command = CreateCommand(query);
         command.Parameters.AddWithValue("@id", model.Id);
         command.Parameters.AddWithValue("@name", model.Name);
         command.Parameters.AddWithValue("@adress", model.Address);
         command.Parameters.AddWithValue("@phoneNumber", model.PhoneNumber);
+        command.Parameters.AddWithValue("@score", model.AverageScore);
         command.Parameters.AddWithValue("@online", model.IsOnlineAvailable);
 
         await command.ExecuteNonQueryAsync();

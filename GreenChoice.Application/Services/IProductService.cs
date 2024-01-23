@@ -13,4 +13,5 @@ public interface IProductService
     Task Create(CreateProductModel model);
     Task Update(UpdateProductModel model);
     Task Remove(int id);
+    Task<ResponseDto<IList<Product>>> GetForHome(int productCount);
 }

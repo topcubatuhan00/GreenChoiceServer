@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Azure.Core;
 using GreenChoice.Domain.Dtos.Response;
 using GreenChoice.Domain.Entities;
 using GreenChoice.Domain.Helpers;
@@ -60,6 +61,15 @@ public class ProductService : IProductService
         {
             var result = await context.Repositories.productQueryRepository.GetById(id);
             return ResponseDto<Product>.Success(result, 200);
+        }
+    }
+
+    public async Task<ResponseDto<IList<Product>>> GetForHome(int productCount)
+    {
+        using (var context = _unitOfWork.Create())
+        {
+            var result = await context.Repositories.productQueryRepository.GetForHome(productCount);
+            return ResponseDto<IList<Product>>.Success(result, 200);
         }
     }
 

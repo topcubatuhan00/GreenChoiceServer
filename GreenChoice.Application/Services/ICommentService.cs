@@ -1,5 +1,6 @@
 ﻿using GreenChoice.Domain.Dtos;
 using GreenChoice.Domain.Dtos.Response;
+using GreenChoice.Domain.Entities;
 using GreenChoice.Domain.Helpers;
 using GreenChoice.Domain.Models.CommentModels;
 using GreenChoice.Domain.Models.HelperModels;
@@ -13,4 +14,5 @@ public interface ICommentService
     Task Create(CreateCommentModel model);
     Task Update(UpdateCommentModel model);
     Task Remove(int id);
+    Task<ResponseDto<IList<CommentReponseDto>>> GetForHome(int commentCount);
 }

@@ -59,6 +59,15 @@ public class StoreService : IStoreService
         }
     }
 
+    public async Task<ResponseDto<IList<Store>>> GetForHome(int storeCount)
+    {
+        using (var context = _unitOfWork.Create())
+        {
+            var result = await context.Repositories.storeQueryRepository.GetForHome(storeCount);
+            return ResponseDto<IList<Store>>.Success(result, 200);
+        }
+    }
+
     public async Task Remove(int id)
     {
         using (var context = _unitOfWork.Create())
