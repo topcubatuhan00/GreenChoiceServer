@@ -8,5 +8,5 @@ public interface IAuthService
     Task<User> CheckByUser(string userName);
     Task<bool> UserIsExist(string userName);
     Task Register(UserRegisterModel userModel);
-    Task<string> Login(UserLoginModel userLoginModel);
+    Task<TokenResponseModel> Login(UserLoginModel userLoginModel);
 }

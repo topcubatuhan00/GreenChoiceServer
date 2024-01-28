@@ -5,7 +5,6 @@ using GreenChoice.Domain.Entities;
 using GreenChoice.Domain.Models.AuthModels;
 using GreenChoice.Domain.UnitOfWork;
 using Microsoft.AspNetCore.Http;
-//using Microsoft.AspNetCore.Http;
 
 namespace GreenChoice.Persistance.Services;
 
@@ -46,7 +45,7 @@ public partial class AuthService : IAuthService
         return false;
     }
 
-    public async Task<string> Login(UserLoginModel userLoginModel)
+    public async Task<TokenResponseModel> Login(UserLoginModel userLoginModel)
     {
         var user = await CheckByUser(userLoginModel.Username);
         if (user == null) throw new Exception("User not found");
