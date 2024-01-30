@@ -2,9 +2,8 @@
 using GreenChoice.Domain.Dtos;
 using GreenChoice.Domain.Dtos.Response;
 using GreenChoice.Domain.Entities;
-using GreenChoice.Domain.Helpers;
 using GreenChoice.Domain.Models.CommentModels;
-using GreenChoice.Domain.Models.HelperModels;
+using GreenChoice.Domain.Models.ProductModels;
 using GreenChoice.Domain.UnitOfWork;
 
 namespace GreenChoice.Application.Services;
@@ -35,19 +34,13 @@ public class CommentService : ICommentService
         }
     }
 
-    public async Task<ResponseDto<PaginationHelper<CommentReponseDto>>> GetAll(PaginationRequest request)
+    public async Task<IList<CommentReponseDto>> GetAll(int userId, int productId)
     {
         using (var context = _unitOfWork.Create())
         {
-            var result = context.Repositories.commentQueryRepository.GetAll(request);
+            var result = await context.Repositories.commentQueryRepository.GetAll(userId, productId);
 
-            var paginationHelper = new PaginationHelper<CommentReponseDto>(result.TotalCount, request.PageSize, request.PageNumber, null);
-
-            var Comments = result.Items.Select(item => _mapper.Map<CommentReponseDto>(item)).ToList();
-
-            paginationHelper.Items = Comments;
-
-            return ResponseDto<PaginationHelper<CommentReponseDto>>.Success(paginationHelper, 200);
+            return result;
         }
     }
 
@@ -93,6 +86,18 @@ public class CommentService : ICommentService
             entity.UpdaterName = "Admin";
             await context.Repositories.commentCommandRepository.UpdateAsync(entity);
             context.SaveChanges();
+        }
+    }
+
+    public async Task UpdateLike(int id)
+    {
+        using (var context = _unitOfWork.Create())
+        {
+            var commentModel = await context.Repositories.commentQueryRepository.GetById(id);
+            var comment = _mapper.Map<Comment>(commentModel);
+            comment.CommentScore += 1;
+
+            await context.Repositories.commentCommandRepository.UpdateAsync(comment);
         }
     }
 }

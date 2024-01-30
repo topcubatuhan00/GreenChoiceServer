@@ -9,4 +9,5 @@ public class CommentReponseDto
     public string UserName { get; set; }
     public string ProductName { get; set; }
     public float CommentScore { get; set; }
+    public string UserPhotoName { get; set; }
 }

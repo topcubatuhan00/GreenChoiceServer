@@ -12,4 +12,6 @@ public class CreateProductModel
     public float SustainabilityScore { get; set; }
     public float AverageScore { get; set; }
     public string CreatorName { get; set; }
+    public string Price { get; set; }
+    public int StoreId { get; set; }
 }

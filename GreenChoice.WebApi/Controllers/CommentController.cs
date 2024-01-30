@@ -1,7 +1,6 @@
 ﻿using GreenChoice.Application.Services;
 using GreenChoice.Domain.Core;
 using GreenChoice.Domain.Models.CommentModels;
-using GreenChoice.Domain.Models.HelperModels;
 using GreenChoice.WebApi.CustomControllerBase;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,12 +28,26 @@ public class CommentController : CustomBaseController
     #endregion
 
     #region List
-    [HttpGet("[action]")]
-    public async Task<IActionResult> GetAll([FromQuery] PaginationRequest request)
+    [HttpPost("[action]")]
+    public async Task<IActionResult> GetAll(CommentListModel model)
     {
-        var comment = await _commentService.GetAll(request);
+        var comment = await _commentService.GetAll(model.UserId, model.ProductId);
 
-        return CreateActionResultInstance(comment);
+        return Ok(comment);
+    }
+
+    [HttpPost("[action]/{id}")]
+    public async Task<IActionResult> UpdateLike(int id)
+    {
+        try
+        {
+            await _commentService.UpdateLike(id);
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+        return Ok();
     }
 
     [HttpGet("{id}")]

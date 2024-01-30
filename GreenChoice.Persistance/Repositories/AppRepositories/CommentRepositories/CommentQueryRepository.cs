@@ -1,8 +1,5 @@
-﻿using Azure.Core;
-using GreenChoice.Domain.Dtos;
-using GreenChoice.Domain.Entities;
+﻿using GreenChoice.Domain.Dtos;
 using GreenChoice.Domain.Helpers;
-using GreenChoice.Domain.Models.HelperModels;
 using GreenChoice.Domain.Repositories.CommentRepositories;
 using Microsoft.Data.SqlClient;
 
@@ -17,16 +14,17 @@ public class CommentQueryRepository : Repository, ICommentQueryRepository
         this._transaction = transaction;
     }
     #endregion
-    public PaginationHelper<CommentReponseDto> GetAll(PaginationRequest request)
+    public async Task<IList<CommentReponseDto>> GetAll(int userId, int productId)
     {
-        var command = CreateCommand("SELECT COUNT(*) FROM [Comment]");
-        int totalCount = (int)command.ExecuteScalar();
-
-        command.CommandText = $"SELECT c.*, p.Name AS ProductName, u.UserName " +
-                      $"FROM [Comment] c " +
-                      $"INNER JOIN [Product] p ON c.ProductId = p.Id " +
-                      $"INNER JOIN [User] u ON c.UserId = u.Id " +
-                      $"ORDER BY c.Id OFFSET {((request.PageNumber - 1) * request.PageSize)} ROWS FETCH NEXT {request.PageSize} ROWS ONLY";
+        var command = CreateCommand($@"
+            SELECT C.*, U.UserName as UserName,U.Photo as PhotoName, P.Name as ProductName
+            FROM [Comment] C
+            JOIN [User] U ON C.UserId = U.Id
+            JOIN [Product] P ON C.ProductId = P.Id
+            where U.Id = @uid and P.Id=@pid;
+        ");
+        command.Parameters.AddWithValue("@uid", userId);
+        command.Parameters.AddWithValue("@pid", productId);
 
         using (var reader = command.ExecuteReader())
         {
@@ -41,10 +39,11 @@ public class CommentQueryRepository : Repository, ICommentQueryRepository
                     Text = reader["Text"].ToString(),
                     UserName = reader["UserName"].ToString(),
                     ProductName = reader["ProductName"].ToString(),
-                    CommentScore = Convert.ToInt32(reader["CommentScore"])
+                    CommentScore = Convert.ToInt32(reader["CommentScore"]),
+                    UserPhotoName = reader["PhotoName"].ToString(),
                 });
             }
-            return new PaginationHelper<CommentReponseDto>(totalCount, request.PageSize, request.PageNumber, comments);
+            return comments;
         }
     }
 

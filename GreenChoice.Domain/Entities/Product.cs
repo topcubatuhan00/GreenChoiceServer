@@ -13,4 +13,6 @@ public class Product : EntityBase
     public string ProductionProcessInformation { get; set; }
     public float SustainabilityScore { get; set; }
     public float AverageScore { get; set; }
+    public string Price { get; set; }
+    public int StoreId { get; set; }
 }

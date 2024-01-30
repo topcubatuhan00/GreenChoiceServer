@@ -55,21 +55,21 @@ public class ProductService : IProductService
         }
     }
 
-    public async Task<ResponseDto<Product>> GetById(int id)
+    public async Task<ResponseDto<GetByIdProductResponse>> GetById(int id)
     {
         using (var context = _unitOfWork.Create())
         {
             var result = await context.Repositories.productQueryRepository.GetById(id);
-            return ResponseDto<Product>.Success(result, 200);
+            return ResponseDto<GetByIdProductResponse>.Success(result, 200);
         }
     }
 
-    public async Task<ResponseDto<IList<Product>>> GetForHome(int productCount)
+    public async Task<ResponseDto<IList<HomeResponseProductModel>>> GetForHome(int productCount)
     {
         using (var context = _unitOfWork.Create())
         {
             var result = await context.Repositories.productQueryRepository.GetForHome(productCount);
-            return ResponseDto<IList<Product>>.Success(result, 200);
+            return ResponseDto<IList<HomeResponseProductModel>>.Success(result, 200);
         }
     }
 
@@ -97,6 +97,18 @@ public class ProductService : IProductService
             entity.UpdaterName = "Admin";
             await context.Repositories.productCommandRepository.UpdateAsync(entity);
             context.SaveChanges();
+        }
+    }
+
+    public async Task UpdateScore(UpdateSustainabilityScoreModel model)
+    {
+        using (var context = _unitOfWork.Create())
+        {
+            var productModel = await context.Repositories.productQueryRepository.GetById(model.Id);
+            var product = _mapper.Map<Product>(productModel);
+            product.SustainabilityScore = ((product.SustainabilityScore + model.Number) / 2);
+
+            await context.Repositories.productCommandRepository.UpdateAsync(product);
         }
     }
     #endregion

@@ -46,6 +46,20 @@ public class ProductController : CustomBaseController
         return CreateActionResultInstance(products);
     }
 
+    [HttpPost("[action]/{id}")]
+    public async Task<IActionResult> UpdateScore(UpdateSustainabilityScoreModel model)
+    {
+        try
+        {
+            await _productService.UpdateScore(model);
+        }
+        catch (Exception e)
+        {
+            throw new Exception(e.Message);
+        }
+        return Ok();
+    }
+
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(int id)
     {

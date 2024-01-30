@@ -50,6 +50,6 @@ public class CommentCommandRepository : Repository, ICommentCommandRepository
         command.Parameters.AddWithValue("@text", model.Text);
         command.Parameters.AddWithValue("@score", model.CommentScore);
 
-        await command.ExecuteNonQueryAsync();
+        await command.ExecuteScalarAsync();
     }
 }

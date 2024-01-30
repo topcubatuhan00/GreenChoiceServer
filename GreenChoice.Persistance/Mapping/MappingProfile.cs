@@ -43,6 +43,7 @@ public partial class MappingProfile : Profile
         #region Product
         CreateMap<Product, CreateProductModel>().ReverseMap();
         CreateMap<Product, UpdateProductModel>().ReverseMap();
+        CreateMap<Product, GetByIdProductResponse>().ReverseMap();
         #endregion
 
         #region ProductCriteriaRS
