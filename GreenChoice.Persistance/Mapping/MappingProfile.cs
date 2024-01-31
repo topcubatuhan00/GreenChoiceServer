@@ -5,6 +5,7 @@ using GreenChoice.Domain.Models.AuthModels;
 using GreenChoice.Domain.Models.CampaignModels;
 using GreenChoice.Domain.Models.CategoryModels;
 using GreenChoice.Domain.Models.CommentModels;
+using GreenChoice.Domain.Models.FavoritesModels;
 using GreenChoice.Domain.Models.ProductCriteriaRSModels;
 using GreenChoice.Domain.Models.ProductModels;
 using GreenChoice.Domain.Models.SettingModels;
@@ -44,6 +45,11 @@ public partial class MappingProfile : Profile
         CreateMap<Product, CreateProductModel>().ReverseMap();
         CreateMap<Product, UpdateProductModel>().ReverseMap();
         CreateMap<Product, GetByIdProductResponse>().ReverseMap();
+        #endregion
+
+        #region Favorites
+        CreateMap<Favorites, CreateFavoriteModel>().ReverseMap();
+        CreateMap<Favorites, ResponseFavoritesModel>().ReverseMap();
         #endregion
 
         #region ProductCriteriaRS

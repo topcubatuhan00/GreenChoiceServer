@@ -16,10 +16,14 @@ public class CommentService : ICommentService
     #endregion
 
     #region Ctor
-    public CommentService(IUnitOfWork unitOfWork, IMapper mapper)
+    public CommentService
+    (
+        IMapper mapper,
+        IUnitOfWork unitOfWork
+    )
     {
-        _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _unitOfWork = unitOfWork;
     }
     #endregion
 

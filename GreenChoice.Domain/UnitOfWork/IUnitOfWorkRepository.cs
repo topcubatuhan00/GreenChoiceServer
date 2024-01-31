@@ -1,6 +1,7 @@
 ﻿using GreenChoice.Domain.Repositories.CampaignRepositories;
 using GreenChoice.Domain.Repositories.CategoryRepositories;
 using GreenChoice.Domain.Repositories.CommentRepositories;
+using GreenChoice.Domain.Repositories.FavoritesRepositories;
 using GreenChoice.Domain.Repositories.ProductCriteriaRSRepositories;
 using GreenChoice.Domain.Repositories.ProductRepositories;
 using GreenChoice.Domain.Repositories.SettingsRepositories;
@@ -61,5 +62,10 @@ public interface IUnitOfWorkRepository
     #region SettingsRepositories
     ISettingsCommandRepository settingsCommandRepository { get; }
     ISettingsQueryRepository settingsQueryRepository { get; }
+    #endregion
+
+    #region FavoritesRepositories
+    IFavoriteCommandRepository favoriteCommandRepository { get; }
+    IFavoriteQueryRepository favoriteQueryRepository { get; }
     #endregion
 }
