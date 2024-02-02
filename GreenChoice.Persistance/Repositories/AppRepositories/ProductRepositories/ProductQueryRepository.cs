@@ -4,6 +4,7 @@ using GreenChoice.Domain.Models.HelperModels;
 using GreenChoice.Domain.Models.ProductModels;
 using GreenChoice.Domain.Repositories.ProductRepositories;
 using Microsoft.Data.SqlClient;
+using System.Security.Cryptography;
 
 namespace GreenChoice.Persistance.Repositories.AppRepositories.ProductRepositories;
 
@@ -47,7 +48,7 @@ public class ProductQueryRepository : Repository, IProductQueryRepository
         }
     }
 
-    public async Task<GetByIdProductResponse> GetById(int Id)
+    public async Task<GetByIdProductResponse> GetById(int id)
     {
         var command = CreateCommand($@"
             SELECT P.*, C.Name as CategoryName, S.Name as StoreName
@@ -56,7 +57,7 @@ public class ProductQueryRepository : Repository, IProductQueryRepository
             JOIN [Store] S ON P.StoreId = S.Id
             where P.Id = @id;
         ");
-        command.Parameters.AddWithValue("@id", Id);
+        command.Parameters.AddWithValue("@id", id);
 
         using (var reader = command.ExecuteReader())
         {
@@ -139,6 +140,28 @@ public class ProductQueryRepository : Repository, IProductQueryRepository
                     AverageScore = float.Parse(reader["AverageScore"].ToString()),
                     Price = reader["Price"] != null ? reader["Price"].ToString() : "",
                     StoreId = Convert.ToInt32(reader["StoreId"])
+                });
+            }
+            return products;
+        }
+    }
+
+    public async Task<IList<GetByStoreIdProductModel>> GetWithStoreId(int storeId)
+    {
+        var command = CreateCommand($@" SELECT * FROM [Product] where StoreId=@sid;");
+
+        command.Parameters.AddWithValue("@sid", storeId);
+
+        using (var reader = command.ExecuteReader())
+        {
+            List<GetByStoreIdProductModel> products = new List<GetByStoreIdProductModel>();
+            while (reader.Read())
+            {
+                products.Add(new GetByStoreIdProductModel
+                {
+                    Id = Convert.ToInt32(reader["Id"]),
+                    Name = reader["Name"] != null ? reader["Name"].ToString() : "",
+                    Price = reader["Price"] != null ? reader["Price"].ToString() : "",
                 });
             }
             return products;

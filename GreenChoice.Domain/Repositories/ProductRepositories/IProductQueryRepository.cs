@@ -8,7 +8,8 @@ namespace GreenChoice.Domain.Repositories.ProductRepositories;
 public interface IProductQueryRepository
 {
     PaginationHelper<Product> GetAll(PaginationRequest request);
-    Task<GetByIdProductResponse> GetById(int Id);
+    Task<GetByIdProductResponse> GetById(int id);
+    Task<IList<GetByStoreIdProductModel>> GetWithStoreId(int storeId);
     Task<Product> GetByName(string Name);
     Task<IList<HomeResponseProductModel>> GetForHome(int productCount);
 }

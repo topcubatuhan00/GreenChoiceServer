@@ -67,6 +67,14 @@ public class ProductController : CustomBaseController
 
         return CreateActionResultInstance(product);
     }
+
+    [HttpGet("[action]/{storeId}")]
+    public async Task<IActionResult> GetWithStoreId(int storeId)
+    {
+        var products = await _productService.GetWithStoreId(storeId);
+
+        return CreateActionResultInstance(products);
+    }
     #endregion
 
     #region Create
