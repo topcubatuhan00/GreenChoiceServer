@@ -40,8 +40,8 @@ public class FavoriteController : CustomBaseController
     [HttpPost("[action]")]
     public async Task<IActionResult> Create(CreateFavoriteModel model)
     {
-        await _favoriteService.CreateFavorites(model.UserId, model.ProductId);
-        return Ok();
+        var result = await _favoriteService.CreateFavorites(model.UserId, model.ProductId);
+        return Ok(result);
     }
 
     [HttpPost("[action]")]

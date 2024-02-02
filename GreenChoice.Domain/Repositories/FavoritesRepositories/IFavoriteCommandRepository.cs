@@ -2,6 +2,6 @@
 
 public interface IFavoriteCommandRepository
 {
-    Task CreateFavorites(int userId, int productId);
+    Task<int> CreateFavorites(int userId, int productId);
     Task RemoveFavorites(int id);
 }

@@ -68,4 +68,16 @@ public class FavoriteQueryRepository : Repository, IFavoriteQueryRepository
             else { return null; }
         }
     }
+
+    public async Task<bool> Check(int userId, int productId)
+    {
+        var command = CreateCommand("SELECT COUNT(*) FROM [Favorites] WHERE UserId=@uid AND ProductId=@pid");
+
+        command.Parameters.AddWithValue("@uid", userId);
+        command.Parameters.AddWithValue("@pid", productId);
+
+        var count = await command.ExecuteScalarAsync();
+
+        return Convert.ToInt32(count) > 0;
+    }
 }

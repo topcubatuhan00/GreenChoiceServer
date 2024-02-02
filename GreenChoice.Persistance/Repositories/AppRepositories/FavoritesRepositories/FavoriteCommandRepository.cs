@@ -17,7 +17,7 @@ public class FavoriteCommandRepository : Repository, IFavoriteCommandRepository
     }
     #endregion
 
-    public async Task CreateFavorites(int userId, int productId)
+    public async Task<int> CreateFavorites(int userId, int productId)
     {
         var query = "INSERT INTO [Favorites]" +
             "(ProductId, UserId) VALUES" +
@@ -26,7 +26,9 @@ public class FavoriteCommandRepository : Repository, IFavoriteCommandRepository
         var command = CreateCommand(query);
         command.Parameters.AddWithValue("@productId", productId);
         command.Parameters.AddWithValue("@userId", userId);
-        await command.ExecuteNonQueryAsync();
+
+        var insertedId = await command.ExecuteScalarAsync();
+        return Convert.ToInt32(insertedId);
     }
 
     public async Task RemoveFavorites(int id)

@@ -24,12 +24,16 @@ public class FavoritesService : IFavoritesService
     }
     #endregion
 
-    public async Task CreateFavorites(int userId, int productId)
+    public async Task<int> CreateFavorites(int userId, int productId)
     {
         using (var context = _unitOfWork.Create())
         {
-            await context.Repositories.favoriteCommandRepository.CreateFavorites(userId, productId);
+            var check = await context.Repositories.favoriteQueryRepository.Check(userId, productId);
+            if (check) throw new Exception("Already Faved");
+
+            var result = await context.Repositories.favoriteCommandRepository.CreateFavorites(userId, productId);
             context.SaveChanges();
+            return result;
         }
     }
 
