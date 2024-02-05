@@ -7,7 +7,7 @@ public class HomeResponseProductModel
     public string Description { get; set; }
     public string CategoryName { get; set; }
     public string BrandName { get; set; }
-    public float AverageScore { get; set; }
+    public string AverageScore { get; set; }
     public string Price { get; set; }
     public int StoreId { get; set; }
 }

@@ -79,4 +79,21 @@ public class ProductCommandRepository : Repository, IProductCommandRepository
 
         await command.ExecuteNonQueryAsync();
     }
+
+    public async Task UpdateScoreAsync(string newScore, int id)
+    {
+        var query = "update [Product] set AverageScore=@score where Id=@id";
+        var command = CreateCommand(query);
+        command.Parameters.AddWithValue("@score", newScore);
+        command.Parameters.AddWithValue("@id", id);
+
+        try
+        {
+            await command.ExecuteNonQueryAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Hata oluştu: {ex.Message}");
+        }
+    }
 }

@@ -38,8 +38,8 @@ public class ProductQueryRepository : Repository, IProductQueryRepository
                     Barcode = reader["Barcode"] != null ? reader["Barcode"].ToString() : "",
                     PackageInformation = reader["PackageInformation"] != null ? reader["PackageInformation"].ToString() : "",
                     ProductionProcessInformation = reader["ProductionProcessInformation"] != null ? reader["ProductionProcessInformation"].ToString() : "",
-                    SustainabilityScore = Convert.ToSingle(reader["SustainabilityScore"]),
-                    AverageScore = Convert.ToSingle(reader["AverageScore"]),
+                    SustainabilityScore = reader["SustainabilityScore"] != null ? reader["SustainabilityScore"].ToString() : "",
+                    AverageScore = reader["SustainabilityScore"] != null ? reader["SustainabilityScore"].ToString() : "",
                     Price = reader["Price"] != null ? reader["Price"].ToString() : "",
                     StoreId = Convert.ToInt32(reader["StoreId"])
                 });
@@ -73,8 +73,8 @@ public class ProductQueryRepository : Repository, IProductQueryRepository
                     Barcode = reader["Barcode"] != null ? reader["Barcode"].ToString() : "",
                     PackageInformation = reader["PackageInformation"] != null ? reader["PackageInformation"].ToString() : "",
                     ProductionProcessInformation = reader["ProductionProcessInformation"] != null ? reader["ProductionProcessInformation"].ToString() : "",
-                    SustainabilityScore = Convert.ToSingle(reader["SustainabilityScore"]),
-                    AverageScore = Convert.ToSingle(reader["AverageScore"]),
+                    SustainabilityScore = reader["SustainabilityScore"] != null ? reader["SustainabilityScore"].ToString() : "",
+                    AverageScore = reader["SustainabilityScore"] != null ? reader["SustainabilityScore"].ToString() : "",
                     Price = reader["Price"] != null ? reader["Price"].ToString() : "",
                     StoreName = reader["StoreName"] != null ? reader["StoreName"].ToString() : "",
                     CategoryId = Convert.ToInt32(reader["CategoryId"]),
@@ -105,8 +105,8 @@ public class ProductQueryRepository : Repository, IProductQueryRepository
                     Barcode = reader["Barcode"] != null ? reader["Barcode"].ToString() : "",
                     PackageInformation = reader["PackageInformation"] != null ? reader["PackageInformation"].ToString() : "",
                     ProductionProcessInformation = reader["ProductionProcessInformation"] != null ? reader["ProductionProcessInformation"].ToString() : "",
-                    SustainabilityScore = Convert.ToSingle(reader["SustainabilityScore"]),
-                    AverageScore = Convert.ToSingle(reader["AverageScore"]),
+                    SustainabilityScore = reader["SustainabilityScore"] != null ? reader["SustainabilityScore"].ToString() : "",
+                    AverageScore = reader["SustainabilityScore"] != null ? reader["SustainabilityScore"].ToString() : "",
                     Price = reader["Price"] != null ? reader["Price"].ToString() : "",
                     StoreId = Convert.ToInt32(reader["StoreId"])
                 };
@@ -137,7 +137,7 @@ public class ProductQueryRepository : Repository, IProductQueryRepository
                     Description = reader["Description"] != null ? reader["Description"].ToString() : "",
                     CategoryName = reader["CategoryName"] != null ? reader["CategoryName"].ToString() : "",
                     BrandName = reader["BrandName"] != null ? reader["BrandName"].ToString() : "",
-                    AverageScore = float.Parse(reader["AverageScore"].ToString()),
+                    AverageScore = reader["SustainabilityScore"] != null ? reader["SustainabilityScore"].ToString() : "",
                     Price = reader["Price"] != null ? reader["Price"].ToString() : "",
                     StoreId = Convert.ToInt32(reader["StoreId"])
                 });

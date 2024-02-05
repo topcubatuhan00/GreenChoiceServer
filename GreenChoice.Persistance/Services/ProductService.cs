@@ -112,11 +112,12 @@ public class ProductService : IProductService
     {
         using (var context = _unitOfWork.Create())
         {
-            var productModel = await context.Repositories.productQueryRepository.GetById(model.Id);
-            var product = _mapper.Map<Product>(productModel);
-            product.SustainabilityScore = ((product.SustainabilityScore + model.Number) / 2);
+            var product = await context.Repositories.productQueryRepository.GetById(model.Id);
+            var productScore = product.SustainabilityScore;
+            var oldScore = Convert.ToSingle(productScore);
+            var newScore = (oldScore + Convert.ToSingle(model.Number))/2;
 
-            await context.Repositories.productCommandRepository.UpdateAsync(product);
+            await context.Repositories.productCommandRepository.UpdateScoreAsync(newScore.ToString(), model.Id);
         }
     }
     #endregion
