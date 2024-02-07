@@ -25,6 +25,8 @@ public class StoreService : IStoreService
 
     public async Task Create(CreateStoreModel model)
     {
+        if (model.Name.Length <= 0) throw new Exception("Mağaza Adı Zorunludur");
+
         using (var context = _unitOfWork.Create())
         {
             var entity = _mapper.Map<Store>(model);

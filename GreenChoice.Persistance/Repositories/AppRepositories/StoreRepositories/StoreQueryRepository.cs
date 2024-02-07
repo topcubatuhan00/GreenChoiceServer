@@ -56,7 +56,8 @@ public class StoreQueryRepository : Repository, IStoreQueryRepository
                     Address = reader["Adress"].ToString(),
                     PhoneNumber = reader["PhoneNumber"].ToString(),
                     IsOnlineAvailable = bool.Parse(reader["IsOnlineAvailable"].ToString()),
-                    AverageScore = float.Parse(reader["AverageScore"].ToString())
+                    AverageScore = float.Parse(reader["AverageScore"].ToString()),
+                    CreatorName = reader["CreatorName"].ToString(),
                 };
             }
             else

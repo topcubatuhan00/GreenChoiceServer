@@ -75,7 +75,7 @@ public class StoreController : CustomBaseController
     #endregion
 
     #region Delete
-    [HttpDelete("(id)")]
+    [HttpDelete("{id}")]
     public async Task<IActionResult> Remove(int id)
     {
         await _storeService.Remove(id);
