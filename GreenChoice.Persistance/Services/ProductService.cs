@@ -38,19 +38,19 @@ public class ProductService : IProductService
         }
     }
 
-    public async Task<ResponseDto<PaginationHelper<Product>>> GetAll(PaginationRequest request)
+    public async Task<ResponseDto<PaginationHelper<GetAllProductModel>>> GetAll(PaginationRequest request)
     {
         using (var context = _unitOfWork.Create())
         {
             var result = context.Repositories.productQueryRepository.GetAll(request);
 
-            var paginationHelper = new PaginationHelper<Product>(result.TotalCount, request.PageSize, request.PageNumber, null);
+            var paginationHelper = new PaginationHelper<GetAllProductModel>(result.TotalCount, request.PageSize, request.PageNumber, null);
 
-            var products = result.Items.Select(item => _mapper.Map<Product>(item)).ToList();
+            var products = result.Items.Select(item => _mapper.Map<GetAllProductModel>(item)).ToList();
 
             paginationHelper.Items = products;
 
-            return ResponseDto<PaginationHelper<Product>>.Success(paginationHelper, 200);
+            return ResponseDto<PaginationHelper<GetAllProductModel>>.Success(paginationHelper, 200);
         }
     }
 

@@ -10,7 +10,7 @@ public interface IProductService
 {
     Task<ResponseDto<GetByIdProductResponse>> GetById(int id);
     Task<ResponseDto<IList<GetByStoreIdProductModel>>> GetWithStoreId(int storeId);
-    Task<ResponseDto<PaginationHelper<Product>>> GetAll(PaginationRequest request);
+    Task<ResponseDto<PaginationHelper<GetAllProductModel>>> GetAll(PaginationRequest request);
     Task Create(CreateProductModel model);
     Task Update(UpdateProductModel model);
     Task Remove(int id);

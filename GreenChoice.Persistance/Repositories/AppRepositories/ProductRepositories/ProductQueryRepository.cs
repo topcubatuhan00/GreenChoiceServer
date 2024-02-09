@@ -4,7 +4,6 @@ using GreenChoice.Domain.Models.HelperModels;
 using GreenChoice.Domain.Models.ProductModels;
 using GreenChoice.Domain.Repositories.ProductRepositories;
 using Microsoft.Data.SqlClient;
-using System.Security.Cryptography;
 
 namespace GreenChoice.Persistance.Repositories.AppRepositories.ProductRepositories;
 
@@ -17,36 +16,31 @@ public class ProductQueryRepository : Repository, IProductQueryRepository
         this._transaction = transaction;
     }
     #endregion
-    public PaginationHelper<Product> GetAll(PaginationRequest request)
+    public PaginationHelper<GetAllProductModel> GetAll(PaginationRequest request)
     {
         var command = CreateCommand("SELECT COUNT(*) FROM [Product]");
         int totalCount = (int)command.ExecuteScalar();
 
-        command.CommandText = $"SELECT * FROM [Product] ORDER BY Id OFFSET {((request.PageNumber - 1) * request.PageSize)} ROWS FETCH NEXT {request.PageSize} ROWS ONLY";
+        command.CommandText = $"SELECT P.Id,P.Name,P.BrandName,P.AverageScore, Store.Name as StoreName FROM Product AS P INNER JOIN Store ON P.StoreId = Store.Id ORDER BY Id OFFSET {((request.PageNumber - 1) * request.PageSize)} ROWS FETCH NEXT {request.PageSize} ROWS ONLY";
+
         using (var reader = command.ExecuteReader())
         {
-            List<Product> products = new List<Product>();
+            List<GetAllProductModel> products = new List<GetAllProductModel>();
             while (reader.Read())
             {
-                products.Add(new Product
+                products.Add(new GetAllProductModel
                 {
                     Id = Convert.ToInt32(reader["Id"]),
                     Name = reader["Name"] != null ? reader["Name"].ToString() : "",
-                    Description = reader["Description"] != null ? reader["Description"].ToString() : "",
-                    CategoryId = Convert.ToInt32(reader["CategoryId"]),
                     BrandName = reader["BrandName"] != null ? reader["BrandName"].ToString() : "",
-                    Barcode = reader["Barcode"] != null ? reader["Barcode"].ToString() : "",
-                    PackageInformation = reader["PackageInformation"] != null ? reader["PackageInformation"].ToString() : "",
-                    ProductionProcessInformation = reader["ProductionProcessInformation"] != null ? reader["ProductionProcessInformation"].ToString() : "",
-                    SustainabilityScore = reader["SustainabilityScore"] != null ? reader["SustainabilityScore"].ToString() : "",
-                    AverageScore = reader["SustainabilityScore"] != null ? reader["SustainabilityScore"].ToString() : "",
-                    Price = reader["Price"] != null ? reader["Price"].ToString() : "",
-                    StoreId = Convert.ToInt32(reader["StoreId"])
+                    StoreName = reader["StoreName"] != null ? reader["StoreName"].ToString() : "",
+                    AverageScore = reader["AverageScore"] != null ? reader["AverageScore"].ToString() : "",
                 });
             }
-            return new PaginationHelper<Product>(totalCount, request.PageSize, request.PageNumber, products);
+            return new PaginationHelper<GetAllProductModel>(totalCount, request.PageSize, request.PageNumber, products);
         }
     }
+
 
     public async Task<GetByIdProductResponse> GetById(int id)
     {
