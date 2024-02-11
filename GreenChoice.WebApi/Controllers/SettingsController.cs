@@ -48,6 +48,14 @@ public class SettingsController : CustomBaseController
     }
 
     [HttpPost("[action]")]
+    public async Task<IActionResult> GetAllByUserName(string userName)
+    {
+        var setting = await _settingsService.GetAllByUserName(userName);
+
+        return Ok(setting);
+    }
+
+    [HttpPost("[action]")]
     public async Task<IActionResult> Create(SettingCreateModel model)
     {
         await _settingsService.Create(model);

@@ -1,4 +1,5 @@
-﻿using GreenChoice.Domain.Entities;
+﻿using Azure.Core;
+using GreenChoice.Domain.Entities;
 using GreenChoice.Domain.Helpers;
 using GreenChoice.Domain.Models.HelperModels;
 using GreenChoice.Domain.Repositories.SettingsRepositories;
@@ -31,10 +32,34 @@ public class SettingsQueryRepository : Repository, ISettingsQueryRepository
                     Id = Convert.ToInt32(reader["Id"]),
                     Name = reader["Name"] != DBNull.Value ? reader["Name"].ToString() : string.Empty,
                     Value = reader["Value"] != DBNull.Value ? reader["Value"].ToString() : string.Empty,
+                    CreatorName = reader["CreatorName"] != DBNull.Value ? reader["CreatorName"].ToString() : string.Empty,
                 });
             }
 
             return new PaginationHelper<Settings>(totalCount, request.PageSize, request.PageNumber, campaigns);
+        }
+    }
+
+    public async Task<IList<Settings>> GetAllByUserName(string userName)
+    {
+        var command = CreateCommand("SELECT * FROM [Settings] where CreatorName=@cname");
+
+        command.Parameters.AddWithValue("@cname", userName);
+        
+        using (var reader = command.ExecuteReader())
+        {
+            List<Settings> settings = new List<Settings>();
+            while (reader.Read())
+            {
+                settings.Add(new Settings
+                {
+                    Id = Convert.ToInt32(reader["Id"]),
+                    Name = reader["Name"] != DBNull.Value ? reader["Name"].ToString() : string.Empty,
+                    Value = reader["Value"] != DBNull.Value ? reader["Value"].ToString() : string.Empty,
+                    CreatorName = reader["CreatorName"] != DBNull.Value ? reader["CreatorName"].ToString() : string.Empty,
+                });
+            }
+            return settings;
         }
     }
 

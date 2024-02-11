@@ -10,6 +10,7 @@ public interface ISettingsService
 {
     Task<ResponseDto<Settings>> GetById(int Id);
     Task<ResponseDto<Settings>> GetByName(string Name);
+    Task<IList<Settings>> GetAllByUserName(string userName);
     Task<ResponseDto<PaginationHelper<Settings>>> GetAll(PaginationRequest request);
     Task Create(SettingCreateModel model);
     Task Update(Settings model);

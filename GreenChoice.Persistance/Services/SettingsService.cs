@@ -32,6 +32,7 @@ public class SettingsService : ISettingsService
         if (check != null) throw new Exception("Already Defined Settings");
 
         var settings = _mapper.Map<Settings>(model);
+        settings.CreatedDate = DateTime.Now;
 
         await context.Repositories.settingsCommandRepository.AddAsync(settings);
 
@@ -51,6 +52,15 @@ public class SettingsService : ISettingsService
             paginationHelper.Items = settings;
 
             return ResponseDto<PaginationHelper<Settings>>.Success(paginationHelper, 200);
+        }
+    }
+
+    public async Task<IList<Settings>> GetAllByUserName(string userName)
+    {
+        using (var context = _unitOfWork.Create())
+        {
+            var result = await context.Repositories.settingsQueryRepository.GetAllByUserName(userName);
+            return result;
         }
     }
 

@@ -18,12 +18,14 @@ public class SettingsCommandRepository : Repository, ISettingsCommandRepository
     public async Task AddAsync(Settings model)
     {
         var query = "INSERT INTO [Settings]" +
-            "(Name, Value) VALUES (" +
-            "@name,@value);" +
+            "(Name, Value, CreatedDate,CreatorName) VALUES (" +
+            "@name,@value, @date,@crname);" +
             "SELECT SCOPE_IDENTITY();";
         var command = CreateCommand(query);
         command.Parameters.AddWithValue("@name", model.Name);
         command.Parameters.AddWithValue("@value", model.Value);
+        command.Parameters.AddWithValue("@date", model.CreatedDate);
+        command.Parameters.AddWithValue("@crname", model.CreatorName);
         await command.ExecuteNonQueryAsync();
     }
 
