@@ -15,4 +15,5 @@ public interface ISettingsService
     Task Create(SettingCreateModel model);
     Task Update(Settings model);
     Task Remove(int id);
+    Task UpdateValue(SettingsUpdateModel model);
 }

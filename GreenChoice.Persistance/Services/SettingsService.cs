@@ -105,5 +105,17 @@ public class SettingsService : ISettingsService
             context.SaveChanges();
         }
     }
+
+    public async Task UpdateValue(SettingsUpdateModel model)
+    {
+        using (var context = _unitOfWork.Create())
+        {
+            var check = await context.Repositories.settingsQueryRepository.GetById(model.Id);
+            if (check == null) throw new Exception("Settings Not Found");
+
+            await context.Repositories.settingsCommandRepository.UpdateValue(model);
+            context.SaveChanges();
+        }
+    }
     #endregion
 }

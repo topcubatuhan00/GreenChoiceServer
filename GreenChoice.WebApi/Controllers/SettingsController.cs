@@ -69,6 +69,13 @@ public class SettingsController : CustomBaseController
         return Ok();
     }
 
+    [HttpPost("[action]")]
+    public async Task<IActionResult> UpdateValue(SettingsUpdateModel model)
+    {
+        await _settingsService.UpdateValue(model);
+        return Ok();
+    }
+
     [HttpDelete("(id)")]
     public async Task<IActionResult> Remove(int id)
     {
