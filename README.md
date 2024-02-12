@@ -17,5 +17,3 @@ Take a green step, protect nature, and embrace sustainable shopping with GreenCh
 
 GreenChoice is a mobile application aiming to help users find, purchase, and make sustainable lifestyle choices with environmentally friendly and sustainable products. The app aims to encourage conscious shopping among users to protect natural resources and reduce environmental impacts.
 
-
-![Logo](https://img.freepik.com/free-vector/red-grunge-style-coming-soon-design_1017-26691.jpg?w=2000)
