@@ -38,28 +38,46 @@ public class ProductService : IProductService
         }
     }
 
-    public async Task<ResponseDto<PaginationHelper<Product>>> GetAll(PaginationRequest request)
+    public async Task<ResponseDto<PaginationHelper<GetAllProductModel>>> GetAll(PaginationRequest request)
     {
         using (var context = _unitOfWork.Create())
         {
             var result = context.Repositories.productQueryRepository.GetAll(request);
 
-            var paginationHelper = new PaginationHelper<Product>(result.TotalCount, request.PageSize, request.PageNumber, null);
+            var paginationHelper = new PaginationHelper<GetAllProductModel>(result.TotalCount, request.PageSize, request.PageNumber, null);
 
-            var products = result.Items.Select(item => _mapper.Map<Product>(item)).ToList();
+            var products = result.Items.Select(item => _mapper.Map<GetAllProductModel>(item)).ToList();
 
             paginationHelper.Items = products;
 
-            return ResponseDto<PaginationHelper<Product>>.Success(paginationHelper, 200);
+            return ResponseDto<PaginationHelper<GetAllProductModel>>.Success(paginationHelper, 200);
         }
     }
 
-    public async Task<ResponseDto<Product>> GetById(int id)
+    public async Task<ResponseDto<GetByIdProductResponse>> GetById(int id)
     {
         using (var context = _unitOfWork.Create())
         {
             var result = await context.Repositories.productQueryRepository.GetById(id);
-            return ResponseDto<Product>.Success(result, 200);
+            return ResponseDto<GetByIdProductResponse>.Success(result, 200);
+        }
+    }
+
+    public async Task<ResponseDto<IList<HomeResponseProductModel>>> GetForHome(int productCount)
+    {
+        using (var context = _unitOfWork.Create())
+        {
+            var result = await context.Repositories.productQueryRepository.GetForHome(productCount);
+            return ResponseDto<IList<HomeResponseProductModel>>.Success(result, 200);
+        }
+    }
+
+    public async Task<ResponseDto<IList<GetByStoreIdProductModel>>> GetWithStoreId(int storeId)
+    {
+        using (var context = _unitOfWork.Create())
+        {
+            var result = await context.Repositories.productQueryRepository.GetWithStoreId(storeId);
+            return ResponseDto<IList<GetByStoreIdProductModel>>.Success(result, 200);
         }
     }
 
@@ -87,6 +105,19 @@ public class ProductService : IProductService
             entity.UpdaterName = "Admin";
             await context.Repositories.productCommandRepository.UpdateAsync(entity);
             context.SaveChanges();
+        }
+    }
+
+    public async Task UpdateScore(UpdateSustainabilityScoreModel model)
+    {
+        using (var context = _unitOfWork.Create())
+        {
+            var product = await context.Repositories.productQueryRepository.GetById(model.Id);
+            var productScore = product.SustainabilityScore;
+            var oldScore = Convert.ToSingle(productScore);
+            var newScore = (oldScore + Convert.ToSingle(model.Number))/2;
+
+            await context.Repositories.productCommandRepository.UpdateScoreAsync(newScore.ToString(), model.Id);
         }
     }
     #endregion

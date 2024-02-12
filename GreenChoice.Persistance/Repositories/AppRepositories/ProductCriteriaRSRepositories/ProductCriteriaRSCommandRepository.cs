@@ -1,5 +1,4 @@
 ﻿using GreenChoice.Domain.Entities;
-using GreenChoice.Domain.Models.ProductCriteriaRSModels;
 using GreenChoice.Domain.Repositories.ProductCriteriaRSRepositories;
 using Microsoft.Data.SqlClient;
 

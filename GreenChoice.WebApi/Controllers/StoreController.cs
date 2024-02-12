@@ -1,4 +1,6 @@
 ﻿using GreenChoice.Application.Services;
+using GreenChoice.Domain.Core;
+using GreenChoice.Domain.Entities;
 using GreenChoice.Domain.Models.HelperModels;
 using GreenChoice.Domain.Models.StoreModels;
 using GreenChoice.WebApi.CustomControllerBase;
@@ -12,12 +14,18 @@ public class StoreController : CustomBaseController
 {
     #region Fields
     private readonly IStoreService _storeService;
+    private readonly ISettingsService _settingsService;
     #endregion
 
     #region Ctor
-    public StoreController(IStoreService storeService)
+    public StoreController
+    (
+        IStoreService storeService,
+        ISettingsService settingsService
+    )
     {
         _storeService = storeService;
+        _settingsService = settingsService;
     }
     #endregion
 
@@ -25,17 +33,26 @@ public class StoreController : CustomBaseController
     [HttpGet("[action]")]
     public async Task<IActionResult> GetAll([FromQuery] PaginationRequest request)
     {
-        var categories = await _storeService.GetAll(request);
+        var stores = await _storeService.GetAll(request);
 
-        return CreateActionResultInstance(categories);
+        return CreateActionResultInstance(stores);
+    }
+
+    [HttpGet("[action]")]
+    public async Task<IActionResult> GetAllForHomePage()
+    {
+        var settingsStoreSize = await _settingsService.GetByName(SettingsDefaults.BestStoreHome);
+        var stores = await _storeService.GetForHome(Convert.ToInt32(settingsStoreSize.Data.Value));
+
+        return CreateActionResultInstance(stores);
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(int id)
     {
-        var category = await _storeService.GetById(id);
+        var store = await _storeService.GetById(id);
 
-        return CreateActionResultInstance(category);
+        return CreateActionResultInstance(store);
     }
     #endregion
 
@@ -58,7 +75,7 @@ public class StoreController : CustomBaseController
     #endregion
 
     #region Delete
-    [HttpDelete("(id)")]
+    [HttpDelete("{id}")]
     public async Task<IActionResult> Remove(int id)
     {
         await _storeService.Remove(id);

@@ -24,6 +24,8 @@ public static class ServiceCollectionExtension
         services.AddScoped<ISustainabilityCriteriaService, SustainabilityCriteriaService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IUserCampaignRSService, UserCampaignRSService>();
+        services.AddScoped<ISettingsService, SettingsService>();
+        services.AddScoped<IFavoritesService, FavoritesService>();
         #endregion
 
         #region Utilities

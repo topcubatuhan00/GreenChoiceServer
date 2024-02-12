@@ -1,5 +1,4 @@
 ﻿using GreenChoice.Domain.Entities;
-using GreenChoice.Domain.Models.CommentModels;
 using GreenChoice.Domain.Repositories.CommentRepositories;
 using Microsoft.Data.SqlClient;
 
@@ -51,6 +50,6 @@ public class CommentCommandRepository : Repository, ICommentCommandRepository
         command.Parameters.AddWithValue("@text", model.Text);
         command.Parameters.AddWithValue("@score", model.CommentScore);
 
-        await command.ExecuteNonQueryAsync();
+        await command.ExecuteScalarAsync();
     }
 }

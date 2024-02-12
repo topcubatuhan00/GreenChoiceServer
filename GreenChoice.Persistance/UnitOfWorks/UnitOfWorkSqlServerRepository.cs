@@ -1,8 +1,11 @@
-﻿using GreenChoice.Domain.Repositories.CampaignRepositories;
+﻿#region Usings
+using GreenChoice.Domain.Repositories.CampaignRepositories;
 using GreenChoice.Domain.Repositories.CategoryRepositories;
 using GreenChoice.Domain.Repositories.CommentRepositories;
+using GreenChoice.Domain.Repositories.FavoritesRepositories;
 using GreenChoice.Domain.Repositories.ProductCriteriaRSRepositories;
 using GreenChoice.Domain.Repositories.ProductRepositories;
+using GreenChoice.Domain.Repositories.SettingsRepositories;
 using GreenChoice.Domain.Repositories.StoreRepositories;
 using GreenChoice.Domain.Repositories.SustainabilityCriteriaRepositories;
 using GreenChoice.Domain.Repositories.UserCampaignRSRepositories;
@@ -11,13 +14,16 @@ using GreenChoice.Domain.UnitOfWork;
 using GreenChoice.Persistance.Repositories.AppRepositories.CampaignRepositories;
 using GreenChoice.Persistance.Repositories.AppRepositories.CategoryRepositories;
 using GreenChoice.Persistance.Repositories.AppRepositories.CommentRepositories;
+using GreenChoice.Persistance.Repositories.AppRepositories.FavoritesRepositories;
 using GreenChoice.Persistance.Repositories.AppRepositories.ProductCriteriaRSRepositories;
 using GreenChoice.Persistance.Repositories.AppRepositories.ProductRepositories;
+using GreenChoice.Persistance.Repositories.AppRepositories.SettingsRepositories;
 using GreenChoice.Persistance.Repositories.AppRepositories.StoreRepositories;
 using GreenChoice.Persistance.Repositories.AppRepositories.SustainabilityCriteriaRepositories;
 using GreenChoice.Persistance.Repositories.AppRepositories.UserCampaignRSRepositories;
 using GreenChoice.Persistance.Repositories.AppRepositories.UserRepositories;
 using Microsoft.Data.SqlClient;
+#endregion
 
 namespace GreenChoice.Persistance.UnitOfWorks;
 
@@ -70,6 +76,18 @@ public class UnitOfWorkSqlServerRepository : IUnitOfWorkRepository
     public IUserCampaignRSQueryRepository userCampaignRSQueryRepository { get; }
     #endregion
 
+    #region Settings
+    public ISettingsCommandRepository settingsCommandRepository { get; }
+
+    public ISettingsQueryRepository settingsQueryRepository { get; }
+    #endregion
+
+    #region Favorites
+    public IFavoriteCommandRepository favoriteCommandRepository { get; }
+
+    public IFavoriteQueryRepository favoriteQueryRepository { get; }
+    #endregion
+
     #endregion
 
     #region Ctor
@@ -118,6 +136,16 @@ public class UnitOfWorkSqlServerRepository : IUnitOfWorkRepository
         #region UserCampaignRS
         userCampaignRSCommandRepository = new UserCampaignRSCommandRepository(context, transaction);
         userCampaignRSQueryRepository = new UserCampaignRSQueryRepository(context, transaction);
+        #endregion
+
+        #region Settings
+        settingsCommandRepository = new SettingsCommandRepository(context, transaction);
+        settingsQueryRepository = new SettingsQueryRepository(context, transaction);
+        #endregion
+
+        #region Settings
+        favoriteQueryRepository = new FavoriteQueryRepository(context, transaction);
+        favoriteCommandRepository = new FavoriteCommandRepository(context, transaction);
         #endregion
     }
     #endregion

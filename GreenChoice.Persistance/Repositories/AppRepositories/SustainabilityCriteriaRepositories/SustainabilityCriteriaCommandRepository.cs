@@ -1,5 +1,4 @@
 ﻿using GreenChoice.Domain.Entities;
-using GreenChoice.Domain.Models.SustainabilityCriteriaModels;
 using GreenChoice.Domain.Repositories.SustainabilityCriteriaRepositories;
 using Microsoft.Data.SqlClient;
 

@@ -10,6 +10,7 @@
 		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.9" />
 		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.7" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.6" />
 	</ItemGroup>
@@ -18,10 +19,6 @@
 		<ProjectReference Include="..\GreenChoice.Application\GreenChoice.Application.csproj" />
 		<ProjectReference Include="..\GreenChoice.Infrastructure\GreenChoice.Infrastructure.csproj" />
 		<ProjectReference Include="..\GreenChoice.Persistance\GreenChoice.Persistance.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Content\Images\" />
 	</ItemGroup>
 
 </Project>

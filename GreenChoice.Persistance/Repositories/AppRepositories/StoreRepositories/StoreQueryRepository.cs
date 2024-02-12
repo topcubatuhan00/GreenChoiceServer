@@ -30,9 +30,10 @@ public class StoreQueryRepository : Repository, IStoreQueryRepository
                 {
                     Id = Convert.ToInt32(reader["Id"]),
                     Name = reader["Name"].ToString(),
-                    Adress = reader["Adress"].ToString(),
+                    Address = reader["Adress"].ToString(),
                     PhoneNumber = reader["PhoneNumber"].ToString(),
                     IsOnlineAvailable = bool.Parse(reader["IsOnlineAvailable"].ToString()),
+                    AverageScore = float.Parse(reader["AverageScore"].ToString())
                 });
             }
             return new PaginationHelper<Store>(totalCount, request.PageSize, request.PageNumber, stores);
@@ -52,13 +53,38 @@ public class StoreQueryRepository : Repository, IStoreQueryRepository
                 {
                     Id = Convert.ToInt32(reader["Id"]),
                     Name = reader["Name"].ToString(),
-                    Adress = reader["Adress"].ToString(),
+                    Address = reader["Adress"].ToString(),
                     PhoneNumber = reader["PhoneNumber"].ToString(),
                     IsOnlineAvailable = bool.Parse(reader["IsOnlineAvailable"].ToString()),
+                    AverageScore = float.Parse(reader["AverageScore"].ToString()),
+                    CreatorName = reader["CreatorName"].ToString(),
                 };
             }
             else
                 return null;
+        }
+    }
+
+    public async Task<IList<Store>> GetForHome(int storeCount)
+    {
+        var command = CreateCommand($"SELECT TOP {storeCount} * FROM [Store] ORDER BY AverageScore DESC;");
+
+        using (var reader = command.ExecuteReader())
+        {
+            List<Store> stores = new List<Store>();
+            while (reader.Read())
+            {
+                stores.Add(new Store
+                {
+                    Id = Convert.ToInt32(reader["Id"]),
+                    Name = reader["Name"].ToString(),
+                    Address = reader["Adress"].ToString(),
+                    PhoneNumber = reader["PhoneNumber"].ToString(),
+                    IsOnlineAvailable = bool.Parse(reader["IsOnlineAvailable"].ToString()),
+                    AverageScore = float.Parse(reader["AverageScore"].ToString())
+                });
+            }
+            return stores;
         }
     }
 }

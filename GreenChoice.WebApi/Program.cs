@@ -1,7 +1,10 @@
 using GreenChoice.WebApi.Configurations;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Filters;
+using System.Net;
 using System.Text;
 
 namespace GreenChoice.WebApi;
@@ -39,14 +42,10 @@ public class Program
         {
             options.AddDefaultPolicy(builder =>
             {
-                builder.WithOrigins("http://localhost:3001")
+                builder
+                    .AllowAnyOrigin()
                     .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowCredentials();
-                builder.WithOrigins("http://localhost:3000")
-                .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowCredentials();
+                    .AllowAnyMethod();
             });
         });
         var app = builder.Build();
@@ -56,6 +55,25 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+
+        app.UseExceptionHandler(options =>
+        {
+            options.Run(async context =>
+            {
+                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                context.Response.ContentType = "application/json";
+
+                var exceptionObject = context.Features.Get<IExceptionHandlerFeature>();
+                if (exceptionObject != null)
+                {
+                    var errorMessage = new { error = exceptionObject.Error.Message };
+                    var errorJson = JsonConvert.SerializeObject(errorMessage);
+                    await context.Response.WriteAsync(errorJson).ConfigureAwait(false);
+                }
+            });
+        });
+
+
         app.UseCors();
         app.UseHttpsRedirection();
 

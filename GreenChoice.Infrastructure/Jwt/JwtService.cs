@@ -1,5 +1,6 @@
 ﻿using GreenChoice.Application.Services.Utilities;
 using GreenChoice.Domain.Entities;
+using GreenChoice.Domain.Models.AuthModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -22,12 +23,12 @@ public class JwtService : IJwtService
     #endregion
 
     #region Methods
-    public string CreateToken(User user)
+    public TokenResponseModel CreateToken(User user)
     {
         List<Claim> claims = new List<Claim>
         {
-            new Claim(ClaimTypes.Name, user.UserName),
-            new Claim(ClaimTypes.Role, user.Role),
+            new Claim("Name", user.UserName),
+            new Claim("Role", user.Role),
             new Claim("Id", user.Id.ToString()),
             new Claim("Photo", user.Photo),
         };
@@ -42,7 +43,8 @@ public class JwtService : IJwtService
         );
 
         var jwt = new JwtSecurityTokenHandler().WriteToken(token);
-        return jwt;
+
+        return new TokenResponseModel { Token = jwt, ExpirationDate = token.ValidTo};
     }
     #endregion
 }

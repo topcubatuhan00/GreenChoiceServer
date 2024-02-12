@@ -1,5 +1,4 @@
 ﻿using GreenChoice.Domain.Entities;
-using GreenChoice.Domain.Models.UserCampaignRSModels;
 using GreenChoice.Domain.Repositories.UserCampaignRSRepositories;
 using Microsoft.Data.SqlClient;
 

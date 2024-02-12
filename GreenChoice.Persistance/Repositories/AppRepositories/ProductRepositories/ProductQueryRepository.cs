@@ -1,6 +1,7 @@
 ﻿using GreenChoice.Domain.Entities;
 using GreenChoice.Domain.Helpers;
 using GreenChoice.Domain.Models.HelperModels;
+using GreenChoice.Domain.Models.ProductModels;
 using GreenChoice.Domain.Repositories.ProductRepositories;
 using Microsoft.Data.SqlClient;
 
@@ -15,56 +16,63 @@ public class ProductQueryRepository : Repository, IProductQueryRepository
         this._transaction = transaction;
     }
     #endregion
-    public PaginationHelper<Product> GetAll(PaginationRequest request)
+    public PaginationHelper<GetAllProductModel> GetAll(PaginationRequest request)
     {
         var command = CreateCommand("SELECT COUNT(*) FROM [Product]");
         int totalCount = (int)command.ExecuteScalar();
 
-        command.CommandText = $"SELECT * FROM [Product] ORDER BY Id OFFSET {((request.PageNumber - 1) * request.PageSize)} ROWS FETCH NEXT {request.PageSize} ROWS ONLY";
+        command.CommandText = $"SELECT P.Id,P.Name,P.BrandName,P.AverageScore, Store.Name as StoreName FROM Product AS P INNER JOIN Store ON P.StoreId = Store.Id ORDER BY Id OFFSET {((request.PageNumber - 1) * request.PageSize)} ROWS FETCH NEXT {request.PageSize} ROWS ONLY";
+
         using (var reader = command.ExecuteReader())
         {
-            List<Product> products = new List<Product>();
+            List<GetAllProductModel> products = new List<GetAllProductModel>();
             while (reader.Read())
             {
-                products.Add(new Product
+                products.Add(new GetAllProductModel
                 {
                     Id = Convert.ToInt32(reader["Id"]),
                     Name = reader["Name"] != null ? reader["Name"].ToString() : "",
-                    Description = reader["Description"] != null ? reader["Description"].ToString() : "",
-                    CategoryId = Convert.ToInt32(reader["CategoryId"]),
-                    BrandName = reader["Description"] != null ? reader["Description"].ToString() : "",
-                    Barcode = reader["Description"] != null ? reader["Description"].ToString() : "",
-                    PackageInformation = reader["Description"] != null ? reader["Description"].ToString() : "",
-                    ProductionProcessInformation = reader["Description"] != null ? reader["Description"].ToString() : "",
-                    SustainabilityScore = Convert.ToSingle(reader["SustainabilityScore"]),
-                    AverageScore = Convert.ToSingle(reader["AverageScore"]),
+                    BrandName = reader["BrandName"] != null ? reader["BrandName"].ToString() : "",
+                    StoreName = reader["StoreName"] != null ? reader["StoreName"].ToString() : "",
+                    AverageScore = reader["AverageScore"] != null ? reader["AverageScore"].ToString() : "",
                 });
             }
-            return new PaginationHelper<Product>(totalCount, request.PageSize, request.PageNumber, products);
+            return new PaginationHelper<GetAllProductModel>(totalCount, request.PageSize, request.PageNumber, products);
         }
     }
 
-    public async Task<Product> GetById(int Id)
+
+    public async Task<GetByIdProductResponse> GetById(int id)
     {
-        var command = CreateCommand("SELECT * FROM [Product] WHERE Id = @id");
-        command.Parameters.AddWithValue("@id", Id);
+        var command = CreateCommand($@"
+            SELECT P.*, C.Name as CategoryName, S.Name as StoreName
+            FROM [Product] P
+            JOIN [Category] C ON P.CategoryId = C.Id
+            JOIN [Store] S ON P.StoreId = S.Id
+            where P.Id = @id;
+        ");
+        command.Parameters.AddWithValue("@id", id);
 
         using (var reader = command.ExecuteReader())
         {
             if (reader.HasRows && reader.Read())
             {
-                return new Product
+                return new GetByIdProductResponse
                 {
                     Id = Convert.ToInt32(reader["Id"]),
                     Name = reader["Name"] != null ? reader["Name"].ToString() : "",
                     Description = reader["Description"] != null ? reader["Description"].ToString() : "",
+                    CategoryName = reader["CategoryName"] != null ? reader["CategoryName"].ToString() : "",
+                    BrandName = reader["BrandName"] != null ? reader["BrandName"].ToString() : "",
+                    Barcode = reader["Barcode"] != null ? reader["Barcode"].ToString() : "",
+                    PackageInformation = reader["PackageInformation"] != null ? reader["PackageInformation"].ToString() : "",
+                    ProductionProcessInformation = reader["ProductionProcessInformation"] != null ? reader["ProductionProcessInformation"].ToString() : "",
+                    SustainabilityScore = reader["SustainabilityScore"] != null ? reader["SustainabilityScore"].ToString() : "",
+                    AverageScore = reader["SustainabilityScore"] != null ? reader["SustainabilityScore"].ToString() : "",
+                    Price = reader["Price"] != null ? reader["Price"].ToString() : "",
+                    StoreName = reader["StoreName"] != null ? reader["StoreName"].ToString() : "",
                     CategoryId = Convert.ToInt32(reader["CategoryId"]),
-                    BrandName = reader["Description"] != null ? reader["Description"].ToString() : "",
-                    Barcode = reader["Description"] != null ? reader["Description"].ToString() : "",
-                    PackageInformation = reader["Description"] != null ? reader["Description"].ToString() : "",
-                    ProductionProcessInformation = reader["Description"] != null ? reader["Description"].ToString() : "",
-                    SustainabilityScore = Convert.ToSingle(reader["SustainabilityScore"]),
-                    AverageScore = Convert.ToSingle(reader["AverageScore"]),
+                    StoreId = Convert.ToInt32(reader["StoreId"]),
                 };
             }
             else
@@ -87,16 +95,70 @@ public class ProductQueryRepository : Repository, IProductQueryRepository
                     Name = reader["Name"] != null ? reader["Name"].ToString() : "",
                     Description = reader["Description"] != null ? reader["Description"].ToString() : "",
                     CategoryId = Convert.ToInt32(reader["CategoryId"]),
-                    BrandName = reader["Description"] != null ? reader["Description"].ToString() : "",
-                    Barcode = reader["Description"] != null ? reader["Description"].ToString() : "",
-                    PackageInformation = reader["Description"] != null ? reader["Description"].ToString() : "",
-                    ProductionProcessInformation = reader["Description"] != null ? reader["Description"].ToString() : "",
-                    SustainabilityScore = Convert.ToSingle(reader["SustainabilityScore"]),
-                    AverageScore = Convert.ToSingle(reader["AverageScore"]),
+                    BrandName = reader["BrandName"] != null ? reader["BrandName"].ToString() : "",
+                    Barcode = reader["Barcode"] != null ? reader["Barcode"].ToString() : "",
+                    PackageInformation = reader["PackageInformation"] != null ? reader["PackageInformation"].ToString() : "",
+                    ProductionProcessInformation = reader["ProductionProcessInformation"] != null ? reader["ProductionProcessInformation"].ToString() : "",
+                    SustainabilityScore = reader["SustainabilityScore"] != null ? reader["SustainabilityScore"].ToString() : "",
+                    AverageScore = reader["SustainabilityScore"] != null ? reader["SustainabilityScore"].ToString() : "",
+                    Price = reader["Price"] != null ? reader["Price"].ToString() : "",
+                    StoreId = Convert.ToInt32(reader["StoreId"])
                 };
             }
             else
                 return null;
+        }
+    }
+
+    public async Task<IList<HomeResponseProductModel>> GetForHome(int productCount)
+    {
+        var command = CreateCommand($@"
+            SELECT TOP {productCount} P.*, C.Name as CategoryName
+            FROM [Product] P
+            JOIN [Category] C ON P.CategoryId = C.Id
+            ORDER BY P.AverageScore DESC;
+        ");
+
+        using (var reader = command.ExecuteReader())
+        {
+            List<HomeResponseProductModel> products = new List<HomeResponseProductModel>();
+            while (reader.Read())
+            {
+                products.Add(new HomeResponseProductModel
+                {
+                    Id = Convert.ToInt32(reader["Id"]),
+                    Name = reader["Name"] != null ? reader["Name"].ToString() : "",
+                    Description = reader["Description"] != null ? reader["Description"].ToString() : "",
+                    CategoryName = reader["CategoryName"] != null ? reader["CategoryName"].ToString() : "",
+                    BrandName = reader["BrandName"] != null ? reader["BrandName"].ToString() : "",
+                    AverageScore = reader["SustainabilityScore"] != null ? reader["SustainabilityScore"].ToString() : "",
+                    Price = reader["Price"] != null ? reader["Price"].ToString() : "",
+                    StoreId = Convert.ToInt32(reader["StoreId"])
+                });
+            }
+            return products;
+        }
+    }
+
+    public async Task<IList<GetByStoreIdProductModel>> GetWithStoreId(int storeId)
+    {
+        var command = CreateCommand($@" SELECT * FROM [Product] where StoreId=@sid;");
+
+        command.Parameters.AddWithValue("@sid", storeId);
+
+        using (var reader = command.ExecuteReader())
+        {
+            List<GetByStoreIdProductModel> products = new List<GetByStoreIdProductModel>();
+            while (reader.Read())
+            {
+                products.Add(new GetByStoreIdProductModel
+                {
+                    Id = Convert.ToInt32(reader["Id"]),
+                    Name = reader["Name"] != null ? reader["Name"].ToString() : "",
+                    Price = reader["Price"] != null ? reader["Price"].ToString() : "",
+                });
+            }
+            return products;
         }
     }
 }

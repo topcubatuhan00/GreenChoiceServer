@@ -82,6 +82,7 @@ public class UserService : IUserService
             if (check == null) throw new Exception("Not Found");
 
             var entity = _mapper.Map<User>(model);
+            entity.Password = BCrypt.Net.BCrypt.HashPassword(model.Password);
             entity.UpdatedDate = DateTime.Now;
             entity.UpdaterName = "Admin";
             context.Repositories.userCommandRepository.Update(entity);

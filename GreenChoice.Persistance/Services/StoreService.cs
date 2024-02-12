@@ -25,6 +25,8 @@ public class StoreService : IStoreService
 
     public async Task Create(CreateStoreModel model)
     {
+        if (model.Name.Length <= 0) throw new Exception("Mağaza Adı Zorunludur");
+
         using (var context = _unitOfWork.Create())
         {
             var entity = _mapper.Map<Store>(model);
@@ -56,6 +58,15 @@ public class StoreService : IStoreService
         {
             var result = await context.Repositories.storeQueryRepository.GetById(id);
             return ResponseDto<Store>.Success(result, 200);
+        }
+    }
+
+    public async Task<ResponseDto<IList<Store>>> GetForHome(int storeCount)
+    {
+        using (var context = _unitOfWork.Create())
+        {
+            var result = await context.Repositories.storeQueryRepository.GetForHome(storeCount);
+            return ResponseDto<IList<Store>>.Success(result, 200);
         }
     }
 

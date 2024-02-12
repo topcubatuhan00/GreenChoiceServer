@@ -1,11 +1,10 @@
-﻿using GreenChoice.Domain.Entities;
-using GreenChoice.Domain.Helpers;
-using GreenChoice.Domain.Models.HelperModels;
+﻿using GreenChoice.Domain.Dtos;
 
 namespace GreenChoice.Domain.Repositories.CommentRepositories;
 
 public interface ICommentQueryRepository
 {
-    PaginationHelper<Comment> GetAll(PaginationRequest request);
-    Task<Comment> GetById(int Id);
+    Task<IList<CommentReponseDto>> GetAll(int userId, int productId);
+    Task<CommentReponseDto> GetById(int Id);
+    Task<IList<CommentReponseDto>> GetForHome(int commentCount);
 }

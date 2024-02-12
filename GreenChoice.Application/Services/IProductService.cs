@@ -8,9 +8,12 @@ namespace GreenChoice.Application.Services;
 
 public interface IProductService
 {
-    Task<ResponseDto<Product>> GetById(int id);
-    Task<ResponseDto<PaginationHelper<Product>>> GetAll(PaginationRequest request);
+    Task<ResponseDto<GetByIdProductResponse>> GetById(int id);
+    Task<ResponseDto<IList<GetByStoreIdProductModel>>> GetWithStoreId(int storeId);
+    Task<ResponseDto<PaginationHelper<GetAllProductModel>>> GetAll(PaginationRequest request);
     Task Create(CreateProductModel model);
     Task Update(UpdateProductModel model);
     Task Remove(int id);
+    Task<ResponseDto<IList<HomeResponseProductModel>>> GetForHome(int productCount);
+    Task UpdateScore(UpdateSustainabilityScoreModel model);
 }
